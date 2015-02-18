@@ -5,10 +5,13 @@
  */
 import java.util.*;
 import javax.swing.*;
+import java.awt.*;
 
 class Legends {
 	private static int BOARD_SIZE = 50;
 	private static int UNITS_PER_TEAM = 9;
+	private static int WINDOW_HEIGHT = 800;
+	private static int WINDOW_WIDTH = 800;
 	
 	public static void main(String[] args) 
 	{
@@ -67,11 +70,18 @@ class Legends {
 		OpenUnit[] teamnoord = createTeam("noord");
 		OpenUnit[] teampopos = createTeam("popos");
 
-		//SwingUtilities.invokeLater(new Runnable){});
+		//SwingUtilities.invokeLater(new Runnable(){
+			JFrame frame = new JFrame("Noord Gestoord: THE GAME");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+			frame.setLocationRelativeTo(null);
 
-		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSizE(800,800);
-		frame.setVisible(true);
+			GameBoard hexboard = new GameBoard();
+			frame.add(hexboard);
+
+
+			frame.setVisible(true);
+		//});
+
 	}
 }
