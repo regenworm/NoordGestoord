@@ -10,7 +10,8 @@ import java.awt.event.*;
 
 public class HexGrid extends JApplet {
 
-	final static int BSIZE = 3;
+	final static int BSIZEX = 3;
+	final static int BSIZEY = 2 * BSIZEX;
 	final static int WIDTH = 800;
 	final static int HEIGHT = 400;
 	static int x = 120;
@@ -19,7 +20,7 @@ public class HexGrid extends JApplet {
 	int startY = y;
 	private Point mouse = new Point();
 	private static Shape outline = Hexagon.hex(x, y);
-
+	private static ArrayList<Integer> tileCords = new ArrayList<Integer>();
 
 	public void init() {
       	MouseListener ml = new MouseListener();
@@ -36,8 +37,6 @@ public class HexGrid extends JApplet {
 		});
 	}
 
-
-
 	public void paint(Graphics g) {
 	    Graphics2D g2 = (Graphics2D) g;
 	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -47,30 +46,36 @@ public class HexGrid extends JApplet {
 	    g2.setPaint(Color.black);
 
 	    // 1st rows
-	    
-	    for (int i = 0; i < BSIZE; i++) {
+	    x = startX;
+	    for (int i = 0; i < BSIZEX; i++) {
 	    	y = startY;
-	    		    	for (int j = 0; j < BSIZE; j++) {
+	    	for (int j = 0; j < BSIZEY; j++) {
 	    		Hexagon.drawHex(x, y, g2);
 	    		y = Hexagon.hexColumnSouth(y);
 	    	}
 	    	
 	    	outline = Hexagon.hex(x, y);
+	    	//tileCords.add(outline);
+	    	System.out.println("tileCords: " + tileCords);
+	    	System.out.println("SHAPE: " + outline);
+
+
 	    	g2.fill(outline);
-	    	//x = Hexagon.hexRowEast(x);
+	    	x = Hexagon.hexRowEast(x);
 	    }
-	/*    
+	   
+	    
 	    // 2nd rows
 	    x = Hexagon.hexOffsetRow(startX);
-	    for (int i = 0; i < BSIZE; i++) {
+	    for (int i = 0; i < BSIZEX; i++) {
 	    	y = Hexagon.hexOffsetColumn(startY);
-	    	for (int j = 0; j < BSIZE; j++) {
+	    	for (int j = 0; j < BSIZEY; j++) {
 	    		Hexagon.drawHex(x, y, g2);
 	    		y = Hexagon.hexColumnSouth(y);
 	    	}
 	    	x = Hexagon.hexRowEast(x);
 	    }
-	   */ 
+	    
 	    
 	    g2.drawString("contains(" + (mouse.x) + ", " + (mouse.y)
 	    	+ ") is " + outline.contains(mouse.x, mouse.y), 10, 350);
@@ -100,6 +105,7 @@ public class HexGrid extends JApplet {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				createUI();
+
 
 			}
 		});
