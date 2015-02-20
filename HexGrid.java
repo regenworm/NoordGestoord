@@ -1,33 +1,54 @@
-// creates game arena
+/* Assignment 3, Datastructuren 2015
+ * Authors: Alex Khawalid, 10634207
+ * 			Philip Bouman, 10668667
+ */
+
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/* 
+ * Creates a HexGrid and registers mouse movements
+ */
+
 public class HexGrid extends JApplet {
 
-	final static int BSIZEX = 2;
+	// Number of tiles
+	final static int BSIZEX = 9;
 	final static int BSIZEY = BSIZEX;
+
+	// Window size
 	final static int WIDTH = 600;
 	final static int HEIGHT = 600;
+
+	// Position first tile
 	static int x = 100;
 	static int y = 100;
 	static int startX = x;
 	static int startY = y;
+
+	private ArrayList<Shape> shapeList = new ArrayList<Shape>();
+	private Polygon poly;
 	private Point mouse = new Point();
-	static int[][] hexCords = new int[100][];
 
 	public void init() {
       	MouseListener ml = new MouseListener();
       	addMouseListener(ml);
-      	int[] xycords;										// coordinates of hexagonBASEX
+
+      	// Create list and fill with hexagon shapes
+		int[] xcords;
+		int[] ycords; 
 		int counter = 0;
-		for (int i = 0; i < BSIZEX*BSIZEX; i = i + BSIZEX) {
+		for (int i = 0; i < BSIZEX; i++) {
 			for (int j = 0; j < BSIZEY; j++) {
-				xycords = Hexagon.getCordXY(x, y);					// get coordinates of hexagon
-				int k = i + j;
-				hexCords[k] = xycords;						// store coordinates of hexagon
+
+				xcords = Hexagon.getCordX(x);
+				ycords = Hexagon.getCordY(y);
+			
+				poly = new Polygon(xcords, ycords, 6);
+				shapeList.add(poly);
 
 				y = Hexagon.hexColumnSouth(y);
 			}
@@ -38,20 +59,17 @@ public class HexGrid extends JApplet {
 			}
 			counter++;
 		}
-		printHexCords(0);
-		//hexCords[0] = null;
 
+		// Delete tiles to create custom playing field
+		int[] delTile = new int[] {0, 0, 5, 5, 5, 12, 11, 11, 
+				18, 26, 43, 43, 50, 50, 56, 56, 56, 56, 61, 61};
+		for (int i = 0; i < delTile.length; i++) {
+			int del = delTile[i];
+			shapeList.remove(del);
+		}	
 	}
 
-	public static void printHexCords(int i) {
-		System.out.print("Cords: " + i + ": ");
-		for (int j = 0; j < 12; j++) {
-			System.out.print(hexCords[i][j] + " , ");
-		}
-		System.out.println("");
-	}
-
-/*
+	// MouseListener in window
 	public HexGrid() {
 		this.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved(MouseEvent e) {
@@ -60,29 +78,43 @@ public class HexGrid extends JApplet {
 			}
 		});
 	}
-*/	
-
+	
+	// Draw graphics 
 	public void paint(Graphics g) {
 	    Graphics2D g2 = (Graphics2D) g;
 	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 	      	RenderingHints.VALUE_ANTIALIAS_ON);
 	    setBackground(Color.BLUE);
+	    g2.clearRect(0, 0, 75, 25);
 	    g2.setPaint(Color.black);
+	   
+	    // Set starting position
 	    x = startX;
 	    y = startY;
-		Hexagon.printBoard(hexCords, BSIZEX, g2);	
+	    int n = 0;
+
+	    // Iterate shapelist and draw objects
+	    while(n < shapeList.size()) {
+	    	Shape s = (Shape)shapeList.get(n);
+	    	g2.setColor(Color.GREEN);
+	    	g2.fill(s);
+			g2.setColor(Color.BLACK);
+	    	g2.draw(s);
+	    	n++;
+	    }
+
+	    // Check if mouse is in hexagon and return location/ action
+	    for (int i = 0; i < shapeList.size(); i++) {
+	    	Shape s = (Shape)shapeList.get(i);
+
+	    	if (s.contains(mouse.x, mouse.y) == true) {
+	    		g2.drawString("Tile: " + i, 10, 20);
+	    		g2.fill(s);
+	    	}
+	    }	
 	}
 
-/*
-
-	    g2.drawString("contains(" + (mouse.x) + ", " + (mouse.y)
-	    	+ ") is " + outline.contains(mouse.x, mouse.y), 10, 350);
-	    if (outline.contains(mouse.x, mouse.y) == true) {
-	        	g2.fill(outline);
-	    }
-*/
-	
-
+	// Create interface
 	public static void createUI() {
 		JFrame frame = new JFrame("ARBOREA");
 
@@ -95,13 +127,14 @@ public class HexGrid extends JApplet {
 				JApplet applet = new HexGrid();
 				frame.getContentPane().add(applet, BorderLayout.CENTER);
 				applet.init();
-				// frame.setR3esizable(false);
+				frame.setResizable(false);
 				frame.pack();
 				frame.setSize(new Dimension(WIDTH,HEIGHT));
 				frame.setLocationRelativeTo(null);
 				frame.setVisible(true);
 	}
 
+	// Run
 	public static void main(String args[]) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -109,10 +142,14 @@ public class HexGrid extends JApplet {
 			}
 		});
 	}
+
+
+	// Mouse Click tester
 	class MouseListener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
 			int x = e.getX();
 			int y = e.getY();
+
 			System.out.println(x + " ," + y);
 		}
 	}
