@@ -1,21 +1,34 @@
 import java.awt.*;
 import javax.swing.*;
+import java.awt.Shape;
 
 public class Hexagon {
 
-	private static int length = 30; // length of edge 
+	private static int length = 28; // length of edge 
 	private static int a = length;
 	private static int b = (int) (a * 0.8660254037844);
-	private static int c;
+	private static int c = a / 2;
+	static int[][] hexCords = new int[100][];
 
-	// returns 6 poitns of hexagon
-	public static Polygon hex(int x, int y) {
-		c = a / 2;
-		int[] xcords, ycords;
+
+	public static int[] getCordXY(int x, int y) {
+		int[] xycords;
+		//xycords = new int[] {x-c, y-b, x+c, y-b, x+a, y, x+c, y+b, x-c, y+b, x-a, y};
+		xycords = new int[] {x-c, x+c, x+a, x+c, x-c, x-a, y-b, y-b, y, y+b, y+b, y};
+
+		return xycords;
+	}
+
+	public static int[] getCordX(int x) {
+		int[] xcords;
 		xcords = new int[] {x-c, x+c, x+a, x+c, x-c, x-a};
-		ycords = new int[] {y-b, y-b, y, y+b, y+b, y};
+		return xcords;
+	}
 
-		return new Polygon(xcords, ycords, 6);
+	public static int[] getCordY(int y) {
+		int[] ycords;
+		ycords = new int[] {y-b, y-b, y, y+b, y+b, y};
+		return ycords;
 	}
 
 	public static int hexOffsetColumn(int y) {
@@ -38,11 +51,27 @@ public class Hexagon {
 		return x;
 	}
 
-	public static void drawHex(int x, int y, Graphics2D g) {
-		Polygon poly = hex(x, y);
+	public static void drawHex(int[] xcords, int[] ycords, Graphics2D g) {
+		Polygon poly = new Polygon(xcords, ycords, 6);		// object
 		g.setColor(Color.GREEN);
 		g.fillPolygon(poly);
 		g.setColor(Color.BLACK);
 		g.drawPolygon(poly);
+	}
+
+	public static void printBoard(int[][] hexCords, int l, Graphics2D g) {
+		System.out.println(hexCords[0][1]);
+		int[] xcords = new int[6];
+		int[] ycords = new int[6];
+		int[] hex = new int[12];
+
+		for (int i = 0; i < l*l; i++) {
+			if (hexCords[i] != null) {
+				hex = hexCords[i];
+				System.arraycopy(hex, 0, xcords, 0, xcords.length);
+				System.arraycopy(hex, xcords.length, ycords, 0, ycords.length);
+				drawHex(xcords, ycords, g);
+			}
+		}
 	}
 }

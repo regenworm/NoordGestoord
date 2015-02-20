@@ -3,31 +3,55 @@ import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Line2D;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.*;
 
 public class HexGrid extends JApplet {
 
-	final static int BSIZEX = 3;
-	final static int BSIZEY = 2 * BSIZEX;
-	final static int WIDTH = 800;
-	final static int HEIGHT = 400;
-	static int x = 120;
-	static int y = 80;
-	int startX = x;
-	int startY = y;
+	final static int BSIZEX = 2;
+	final static int BSIZEY = BSIZEX;
+	final static int WIDTH = 600;
+	final static int HEIGHT = 600;
+	static int x = 100;
+	static int y = 100;
+	static int startX = x;
+	static int startY = y;
 	private Point mouse = new Point();
-	private static Shape outline = Hexagon.hex(x, y);
-	private static ArrayList<Integer> tileCords = new ArrayList<Integer>();
+	static int[][] hexCords = new int[100][];
 
 	public void init() {
       	MouseListener ml = new MouseListener();
       	addMouseListener(ml);
-      	
+      	int[] xycords;										// coordinates of hexagonBASEX
+		int counter = 0;
+		for (int i = 0; i < BSIZEX*BSIZEX; i = i + BSIZEX) {
+			for (int j = 0; j < BSIZEY; j++) {
+				xycords = Hexagon.getCordXY(x, y);					// get coordinates of hexagon
+				int k = i + j;
+				hexCords[k] = xycords;						// store coordinates of hexagon
+
+				y = Hexagon.hexColumnSouth(y);
+			}
+			y = startY;
+			x = Hexagon.hexOffsetRow(x);
+			if (counter % 2 == 0) {
+				y = Hexagon.hexOffsetColumn(y);
+			}
+			counter++;
+		}
+		printHexCords(0);
+		//hexCords[0] = null;
+
 	}
 
+	public static void printHexCords(int i) {
+		System.out.print("Cords: " + i + ": ");
+		for (int j = 0; j < 12; j++) {
+			System.out.print(hexCords[i][j] + " , ");
+		}
+		System.out.println("");
+	}
+
+/*
 	public HexGrid() {
 		this.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved(MouseEvent e) {
@@ -36,51 +60,28 @@ public class HexGrid extends JApplet {
 			}
 		});
 	}
+*/	
 
 	public void paint(Graphics g) {
 	    Graphics2D g2 = (Graphics2D) g;
 	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 	      	RenderingHints.VALUE_ANTIALIAS_ON);
 	    setBackground(Color.BLUE);
-	    g2.clearRect(0,HEIGHT - 75, 200,HEIGHT);
 	    g2.setPaint(Color.black);
-
-	    // 1st rows
 	    x = startX;
-	    for (int i = 0; i < BSIZEX; i++) {
-	    	y = startY;
-	    	for (int j = 0; j < BSIZEY; j++) {
-	    		Hexagon.drawHex(x, y, g2);
-	    		y = Hexagon.hexColumnSouth(y);
-	    	}
-	    	
-	    	outline = Hexagon.hex(x, y);
-	    	//tileCords.add(outline);
-	    	System.out.println("tileCords: " + tileCords);
-	    	System.out.println("SHAPE: " + outline);
+	    y = startY;
+		Hexagon.printBoard(hexCords, BSIZEX, g2);	
+	}
 
+/*
 
-	    	g2.fill(outline);
-	    	x = Hexagon.hexRowEast(x);
-	    }
-	   
-	    
-	    // 2nd rows
-	    x = Hexagon.hexOffsetRow(startX);
-	    for (int i = 0; i < BSIZEX; i++) {
-	    	y = Hexagon.hexOffsetColumn(startY);
-	    	for (int j = 0; j < BSIZEY; j++) {
-	    		Hexagon.drawHex(x, y, g2);
-	    		y = Hexagon.hexColumnSouth(y);
-	    	}
-	    	x = Hexagon.hexRowEast(x);
-	    }
-	    
-	    
 	    g2.drawString("contains(" + (mouse.x) + ", " + (mouse.y)
 	    	+ ") is " + outline.contains(mouse.x, mouse.y), 10, 350);
-
-	}
+	    if (outline.contains(mouse.x, mouse.y) == true) {
+	        	g2.fill(outline);
+	    }
+*/
+	
 
 	public static void createUI() {
 		JFrame frame = new JFrame("ARBOREA");
@@ -94,19 +95,17 @@ public class HexGrid extends JApplet {
 				JApplet applet = new HexGrid();
 				frame.getContentPane().add(applet, BorderLayout.CENTER);
 				applet.init();
-				frame.setResizable(false);
+				// frame.setR3esizable(false);
 				frame.pack();
 				frame.setSize(new Dimension(WIDTH,HEIGHT));
 				frame.setLocationRelativeTo(null);
 				frame.setVisible(true);
 	}
+
 	public static void main(String args[]) {
-		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				createUI();
-
-
 			}
 		});
 	}
@@ -117,6 +116,5 @@ public class HexGrid extends JApplet {
 			System.out.println(x + " ," + y);
 		}
 	}
-
 }
 	
