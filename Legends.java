@@ -56,7 +56,7 @@ class Legends {
 		}
 	}
 
-
+	// Creates teams using createunits
 	private OpenUnit[] createTeam(String team)
 	{
 		OpenUnit[] units = new OpenUnit[UNITS_PER_TEAM];
@@ -65,23 +65,34 @@ class Legends {
 		return units;
 	}
 
+	// initialize game representation
 	private void initGame() 
 	{
-		OpenUnit[] teamnoord = createTeam("noord");
-		OpenUnit[] teampopos = createTeam("popos");
-
-		//SwingUtilities.invokeLater(new Runnable(){
-			JFrame frame = new JFrame("Noord Gestoord: THE GAME");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
-			frame.setLocationRelativeTo(null);
-
-			GameBoard hexboard = new GameBoard();
-			frame.add(hexboard);
+		OpenUnit[] teamnoord = createTeam("humans");
+		OpenUnit[] teampopos = createTeam("orcs");
 
 
-			frame.setVisible(true);
-		//});
+		
+		// graphics
+		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+		frame.setLocationRelativeTo(null);
 
+		GameBoard hexboard = new GameBoard();
+		int x = 700;
+		int y = 80;
+
+
+
+		frame.add(hexboard);
+		frame.setVisible(true);
+
+
+		for (OpenUnit unit : teamnoord)
+		{
+			y += 55;
+			unit.setImage(hexboard.addUnitGraphics("Swordsman", x, y));
+		}
 	}
 }

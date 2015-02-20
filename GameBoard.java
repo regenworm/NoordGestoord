@@ -2,20 +2,25 @@ import java.awt.*;
 import javax.swing.*;
 
 public class GameBoard extends JPanel {
+	public Graphics graphics;
+	private String GENERALTEAM1 = "noordboi.png";
+	private String SWORDSMANTEAM1 = "noordboi.png";
+	private String GENERALTEAM2 = "noordboi.png";
+	private String SWORDSMANTEAM2 = "noordboi.png";
 
 	@Override
 	public void paintComponent(Graphics g)
 	{
-		super.paintComponent(g);
-
+		this.graphics = g;
 		drawHex(g);
-		drawNoordboi(g);
+		drawGeneral(g);
+
 	}
 
-	public void drawNoordboi(Graphics g) {
-		ImageIcon noordboi = new ImageIcon("noordboi.png");
-		Image noordboiImage = noordboi.getImage();
-		g.drawImage(noordboiImage, 400, 400, null);
+	private void drawGeneral(Graphics g) {
+		ImageIcon general = new ImageIcon("noordboi.png");
+		Image generalImage = general.getImage();
+		g.drawImage(generalImage, 300, 400, null);
 	}
 
 	// werkt heel slecht op kleine radius
@@ -30,9 +35,18 @@ public class GameBoard extends JPanel {
 			x = (int) tempx;
 			y = (int) tempy;
 
-			System.out.println("Point "+ i);
+			if (tempx - x > 0.5)
+			{
+				x++;
+			}
+			if (tempy - y > 0.5)
+			{
+				y++;
+			}
+
+			/*System.out.println("Point "+ i);
 			System.out.println(tempx + "\n" + tempy);
-			System.out.println(x + "\n" + y);
+			System.out.println(x + "\n" + y);*/
 
 
 			hexagon.addPoint(x,y);
@@ -56,13 +70,26 @@ public class GameBoard extends JPanel {
 
 		// make hexagons
 		Polygon hexagon = createHexagon(300,400,3);
-		g2d.setStroke(new BasicStroke(100));
+		g2d.setStroke(new BasicStroke(120));
 		g2d.setColor(Color.gray);
 		g2d.draw(hexagon);
 	}
 
-
-	public GameBoard()
+	public Image addUnitGraphics(String type, int posx, int posy)
 	{
+		Image imObject;
+		if (type.equals("Swordsman"))
+		{
+			ImageIcon soldier =  new ImageIcon("noordboi.png");
+			imObject = soldier.getImage();
+			this.graphics.drawImage(imObject, posx, posy, null);
+		}
+		else //(type.equals("General"))
+		{
+			ImageIcon general =  new ImageIcon("noordboi.png");
+			imObject = general.getImage();
+			this.graphics.drawImage(imObject, posx, posy, null);
+		}
+		return imObject;
 	}
 }
