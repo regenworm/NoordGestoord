@@ -29,6 +29,12 @@ public class HexGrid extends JApplet {
 	static int startX = x;
 	static int startY = y;
 
+	// Tile selected
+	boolean selected = false;
+
+	// Tiles clicked
+	static ArrayList<Integer> clicked = new ArrayList<Integer>();
+
 	private ArrayList<Shape> shapeList = new ArrayList<Shape>();
 	private Polygon poly;
 	private Point mouse = new Point();
@@ -69,16 +75,6 @@ public class HexGrid extends JApplet {
 		}	
 	}
 
-	// MouseListener in window
-	public HexGrid() {
-		this.addMouseMotionListener(new MouseMotionAdapter() {
-			public void mouseMoved(MouseEvent e) {
-				mouse = e.getPoint();
-				e.getComponent().repaint();
-			}
-		});
-	}
-	
 	// Draw graphics 
 	public void paint(Graphics g) {
 	    Graphics2D g2 = (Graphics2D) g;
@@ -106,12 +102,42 @@ public class HexGrid extends JApplet {
 	    // Check if mouse is in hexagon and return location/ action
 	    for (int i = 0; i < shapeList.size(); i++) {
 	    	Shape s = (Shape)shapeList.get(i);
-
+	    	
 	    	if (s.contains(mouse.x, mouse.y) == true) {
 	    		g2.drawString("Tile: " + i, 10, 20);
-	    		g2.fill(s);
+	    		clickCount(i);
+	    		
+	    		// Check if already slected
+	   			if (selected == true && clicked.size() > 1  
+	   					&& clicked.get(clicked.size() - 1) 
+	   					== clicked.get(clicked.size() - 2)) {
+
+	   				g2.setStroke(new BasicStroke(1));
+	   				g2.setColor(Color.BLACK);
+	   				g2.draw(s);
+	   				clicked.remove(0);
+	   				selected = false;
+
+	   			// New selection	
+	   			} else {
+	   				g2.setStroke(new BasicStroke(5));
+	    			g2.setColor(Color.RED);
+	    			g2.draw(s);	
+	    			selected = true;	
+	   			}
 	    	}
-	    }	
+	    }
+	}
+
+	// Keeps track of clicked Tiles
+	public static void clickCount(int i) {
+		clicked.add(i);
+		System.out.println("clicked: " + clicked);
+	}
+
+	// return clicked tiles
+	public static ArrayList<Integer> tilesClicked() {
+		return clicked;
 	}
 
 	// Create interface
@@ -143,10 +169,11 @@ public class HexGrid extends JApplet {
 		});
 	}
 
-
-	// Mouse Click tester
+	// Mouse click listener
 	class MouseListener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
+			mouse = e.getPoint();
+			e.getComponent().repaint();
 			int x = e.getX();
 			int y = e.getY();
 

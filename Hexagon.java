@@ -15,9 +15,12 @@ public class Hexagon {
 
 	// length of edge hexagon
 	private static int length = 28; 	
-
 	private static int a = length;
-	private static int b = (int) (a * 0.8660254037844);
+
+	// b = a cos(30)
+	private static int b = (int) (a * 0.8660254037844); 
+
+	// c = a sin(30)
 	private static int c = a / 2;
 
 	// Get x-coordinates of a hexagon
