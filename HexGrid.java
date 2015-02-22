@@ -35,6 +35,12 @@ public class HexGrid extends JApplet {
 	// Tiles clicked
 	static ArrayList<Integer> clicked = new ArrayList<Integer>();
 
+	// Adjacent tiles
+	Rectangle adjacentCheck = new Rectangle();
+	Rectangle rect = new Rectangle();
+	private static boolean adjacent;
+
+
 	private ArrayList<Shape> shapeList = new ArrayList<Shape>();
 	private Polygon poly;
 	private Point mouse = new Point();
@@ -80,8 +86,8 @@ public class HexGrid extends JApplet {
 	    Graphics2D g2 = (Graphics2D) g;
 	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 	      	RenderingHints.VALUE_ANTIALIAS_ON);
-	    setBackground(Color.BLUE);
-	    g2.clearRect(0, 0, 75, 25);
+	    setBackground(new Color(60, 120, 230));
+	    g2.clearRect(0, 0, 700, 75);
 	    g2.setPaint(Color.black);
 	   
 	    // Set starting position
@@ -92,9 +98,10 @@ public class HexGrid extends JApplet {
 	    // Iterate shapelist and draw objects
 	    while(n < shapeList.size()) {
 	    	Shape s = (Shape)shapeList.get(n);
-	    	g2.setColor(Color.GREEN);
+	    	g2.setStroke(new BasicStroke(3));
+	    	g2.setColor(new Color(50, 250, 50));
 	    	g2.fill(s);
-			g2.setColor(Color.BLACK);
+			g2.setColor(new Color(10, 80, 10));
 	    	g2.draw(s);
 	    	n++;
 	    }
@@ -103,19 +110,26 @@ public class HexGrid extends JApplet {
 	    for (int i = 0; i < shapeList.size(); i++) {
 	    	Shape s = (Shape)shapeList.get(i);
 	    	
+	    	// Rectangle rect = s.getBounds();
 	    	if (s.contains(mouse.x, mouse.y) == true) {
+	    		g2.setColor(Color.BLACK);
+
 	    		g2.drawString("Tile: " + i, 10, 20);
-	    		clickCount(i);
+	    		g2.drawString("Last clicked Tile: " + lastTile(), 10, 40);
 	    		
+	    		clickCount(i);			// adds to list clicked tiles
+	    		adjacentTiles(i, s);	// checkc adjacent tiles
+
+	    		g2.drawString("Adjacent: " + adjacenTile(), 10, 60);
+
 	    		// Check if already slected
 	   			if (selected == true && clicked.size() > 1  
 	   					&& clicked.get(clicked.size() - 1) 
 	   					== clicked.get(clicked.size() - 2)) {
 
-	   				g2.setStroke(new BasicStroke(1));
-	   				g2.setColor(Color.BLACK);
+	   				g2.setStroke(new BasicStroke(3));
+	   				g2.setColor(new Color(10, 80, 10));
 	   				g2.draw(s);
-	   				clicked.remove(0);
 	   				selected = false;
 
 	   			// New selection	
@@ -127,18 +141,71 @@ public class HexGrid extends JApplet {
 	   			}
 	    	}
 	    }
+
 	}
 
 	// Keeps track of clicked Tiles
 	public static void clickCount(int i) {
 		clicked.add(i);
-		System.out.println("clicked: " + clicked);
 	}
 
-	// return clicked tiles
+	// Return clicked tiles
 	public static ArrayList<Integer> tilesClicked() {
 		return clicked;
 	}
+
+	// Returns true if tile is adjacent
+	public static boolean adjacenTile() {
+		return adjacent;
+	}
+
+	// Returns last Clicked Tile
+	public static int lastTile() {
+		int n;
+
+		// insert exception ?
+		if (clicked.size() < 1) {
+			n = 0;
+		} else {
+			n = clicked.get(clicked.size() - 1);
+		}	
+		return n;
+	}
+
+	// Return last clicked tile for adjacentTiles
+	public static int lastClicked() {
+		int n;
+
+		// insert exception ?
+		if (clicked.size() < 2) {
+			n = 0;
+		} else {
+			n = clicked.get(clicked.size() - 2);
+		}	
+		return n;
+	}
+
+	/*
+	 * Creates rectangle that encapsulates the hexagon for the selected tile.
+	 * Checks if this rectangle intersects with the rectangle from the previous
+	 * selected tile. Set boolean adjacent.
+	 */
+	public void adjacentTiles(int selected, Shape s) {
+		rect = s.getBounds();
+
+		int x = (int) rect.getX();
+		int y = (int) rect.getY() - 2;
+		int h = (int) rect.getHeight() + 2;
+		int w = (int) rect.getWidth();
+		Rectangle rectCopy = new Rectangle(x, y, h, w);
+
+		Shape t = shapeList.get(lastClicked());
+		adjacentCheck = t.getBounds();
+
+		// set boolean
+		adjacent = rectCopy.intersects(adjacentCheck);
+	}
+
 
 	// Create interface
 	public static void createUI() {
@@ -176,8 +243,6 @@ public class HexGrid extends JApplet {
 			e.getComponent().repaint();
 			int x = e.getX();
 			int y = e.getY();
-
-			System.out.println(x + " ," + y);
 		}
 	}
 }
