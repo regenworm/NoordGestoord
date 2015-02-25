@@ -123,8 +123,8 @@ public class HexGrid extends JApplet {
 	    		g2.drawString("Adjacent: " + adjacenTile(), 10, 60);
 
 	    		// Check if already slected
-	   			if (selected == true && clicked.size() > 1  
-	   					&& clicked.get(clicked.size() - 1) 
+	   			if (selected == true && clicked.size() > 1
+	   					&& clicked.get(clicked.size() - 1)
 	   					== clicked.get(clicked.size() - 2)) {
 
 	   				g2.setStroke(new BasicStroke(3));
@@ -134,7 +134,7 @@ public class HexGrid extends JApplet {
 
 	   			// New selection	
 	   			} else {
-	   				g2.setStroke(new BasicStroke(5));
+	   				g2.setStroke(new BasicStroke(3));
 	    			g2.setColor(Color.RED);
 	    			g2.draw(s);	
 	    			selected = true;	
