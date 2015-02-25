@@ -13,10 +13,20 @@ class Legends {
 	private static int WINDOW_HEIGHT = 800;
 	private static int WINDOW_WIDTH = 800;
 	
+	// initiate game 
 	public static void main(String[] args) 
 	{
 		Legends program = new Legends();
 		program.initGame();
+	}
+
+	// initialize game representation
+	private void initGame() 
+	{
+		// init unit representations
+		OpenUnit[] teamnoord = createTeam("noordboiz");
+		OpenUnit[] teampopos = createTeam("popos");
+
 	}
 
 
@@ -65,34 +75,4 @@ class Legends {
 		return units;
 	}
 
-	// initialize game representation
-	private void initGame() 
-	{
-		OpenUnit[] teamnoord = createTeam("humans");
-		OpenUnit[] teampopos = createTeam("orcs");
-
-
-		
-		// graphics
-		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
-		frame.setLocationRelativeTo(null);
-
-		GameBoard hexboard = new GameBoard();
-		int x = 700;
-		int y = 80;
-
-
-
-		frame.add(hexboard);
-		frame.setVisible(true);
-
-
-		for (OpenUnit unit : teamnoord)
-		{
-			y += 55;
-			unit.setImage(hexboard.addUnitGraphics("Swordsman", x, y));
-		}
-	}
 }

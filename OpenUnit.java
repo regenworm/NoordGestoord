@@ -2,6 +2,12 @@ import java.util.*;
 import java.awt.Image;
 
 public interface OpenUnit {
+	public void reduceHp();
+	public int getAtk();
 	public void setImage(Image imObject);
-	public void getAttacked(double damage);
+	public void attack(OpenUnit target);
+	public void moveUnit(int[] coords);
+	public void die();
+	public int getHp();
+
 }
