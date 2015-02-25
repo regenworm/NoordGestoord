@@ -14,6 +14,7 @@ import java.awt.event.*;
  */
 
 public class HexGrid extends JApplet {
+	public Graphics graphics;
 
 	// Number of tiles
 	final static int BSIZEX = 9;
@@ -44,6 +45,11 @@ public class HexGrid extends JApplet {
 	private ArrayList<Shape> shapeList = new ArrayList<Shape>();
 	private Polygon poly;
 	private Point mouse = new Point();
+
+
+	public static void HexGrid() {
+		createUI();
+	}
 
 	public void init() {
       	MouseListener ml = new MouseListener();
@@ -83,6 +89,7 @@ public class HexGrid extends JApplet {
 
 	// Draw graphics 
 	public void paint(Graphics g) {
+		this.graphics = g;
 	    Graphics2D g2 = (Graphics2D) g;
 	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 	      	RenderingHints.VALUE_ANTIALIAS_ON);
@@ -211,22 +218,23 @@ public class HexGrid extends JApplet {
 	public static void createUI() {
 		JFrame frame = new JFrame("ARBOREA");
 
-				frame.addWindowListener(new WindowAdapter() {
-					public void windowClosing(WindowEvent e) {
-						System.exit(0);
-					}
-				});
+			frame.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					System.exit(0);
+				}
+			});
 
-				JApplet applet = new HexGrid();
-				frame.getContentPane().add(applet, BorderLayout.CENTER);
-				applet.init();
-				frame.setResizable(false);
-				frame.pack();
-				frame.setSize(new Dimension(WIDTH,HEIGHT));
-				frame.setLocationRelativeTo(null);
-				frame.setVisible(true);
+			JApplet applet = new HexGrid();
+			frame.getContentPane().add(applet, BorderLayout.CENTER);
+			applet.init();
+			frame.setResizable(false);
+			frame.pack();
+			frame.setSize(new Dimension(WIDTH,HEIGHT));
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
 	}
 
+/*
 	// Run
 	public static void main(String args[]) {
 		EventQueue.invokeLater(new Runnable() {
@@ -235,6 +243,7 @@ public class HexGrid extends JApplet {
 			}
 		});
 	}
+*/	
 
 	// Mouse click listener
 	class MouseListener extends MouseAdapter {
