@@ -14,12 +14,12 @@ import java.awt.Shape;
 public class Hexagon {
 
 	// length of edge hexagon
-	private static int length = 35; 	
+	private static int length = 30; 	
 	private static int a = length;
 
 	// b = a cos(30)
 	// geen idee waarom ik eerst a*6 moet doen, maar het werkt...
-	private static int b = (int) ((a*6) * Math.cos(30)); //(a * 0.8660254037844); 
+	private static int b = (int) ((a*5) * Math.cos(30)); //(a * 0.8660254037844); 
 
 	// c = a sin(30)
 	private static int c = a / 2;
