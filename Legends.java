@@ -10,8 +10,8 @@ import java.awt.*;
 class Legends {
 	private static int BOARD_SIZE = 50;
 	private static int UNITS_PER_TEAM = 9;
-	private static int WINDOW_HEIGHT = 600;
-	private static int WINDOW_WIDTH = 600;
+	private static int WINDOW_HEIGHT = 800;
+	private static int WINDOW_WIDTH = 800;
 	
 	// initiate game 
 	public static void main(String[] args) 
@@ -66,7 +66,7 @@ class Legends {
 	}
 
 	// Create interface
-	public static void createUI() {
+	public void createUI() {
 		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,13 +79,23 @@ class Legends {
 		frame.setSize(new Dimension(WINDOW_WIDTH,WINDOW_HEIGHT));
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+
+		OpenUnit[] teamnoord = createTeam("noordboiz");
+		OpenUnit[] teampopos = createTeam("popoow");
+		int x = 500;
+		int y = 70;
+
+		for (OpenUnit unit : teamnoord)
+		{
+			y += 55;
+			unit.setImage(applet.addUnitGraphics("Swordsman", x, y));
+		}
+
 	}
 
 	// initialize game representation
 	private void initGame() 
 	{	
-		OpenUnit[] teamnoord = createTeam("noordboiz");
-		OpenUnit[] teampopos = createTeam("popoow");
 		createUI();
 
 		int x = 700;
