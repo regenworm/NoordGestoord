@@ -47,10 +47,6 @@ public class HexGrid extends JApplet {
 	private Point mouse = new Point();
 
 
-	public static void HexGrid() {
-		createUI();
-	}
-
 	public void init() {
       	MouseListener ml = new MouseListener();
       	addMouseListener(ml);
@@ -213,38 +209,6 @@ public class HexGrid extends JApplet {
 		adjacent = rectCopy.intersects(adjacentCheck);
 	}
 
-
-	// Create interface
-	public static void createUI() {
-		JFrame frame = new JFrame("ARBOREA");
-
-			frame.addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent e) {
-					System.exit(0);
-				}
-			});
-
-			JApplet applet = new HexGrid();
-			frame.getContentPane().add(applet, BorderLayout.CENTER);
-			applet.init();
-			frame.setResizable(false);
-			frame.pack();
-			frame.setSize(new Dimension(WIDTH,HEIGHT));
-			frame.setLocationRelativeTo(null);
-			frame.setVisible(true);
-	}
-
-/*
-	// Run
-	public static void main(String args[]) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				createUI();
-			}
-		});
-	}
-*/	
-
 	// Mouse click listener
 	class MouseListener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
@@ -253,6 +217,32 @@ public class HexGrid extends JApplet {
 			int x = e.getX();
 			int y = e.getY();
 		}
+	}
+
+
+	private void drawGeneral(Graphics g) {
+		ImageIcon general = new ImageIcon("noordboi.png");
+		Image generalImage = general.getImage();
+		g.drawImage(generalImage, 300, 400, null);
+	}
+
+
+	public Image addUnitGraphics(String type, int posx, int posy)
+	{
+		Image imObject;
+		if (type.equals("Swordsman"))
+		{
+			ImageIcon soldier =  new ImageIcon("noordboi.png");
+			imObject = soldier.getImage();
+			this.graphics.drawImage(imObject, posx, posy, null);
+		}
+		else //(type.equals("General"))
+		{
+			ImageIcon general =  new ImageIcon("noordboi.png");
+			imObject = general.getImage();
+			this.graphics.drawImage(imObject, posx, posy, null);
+		}
+		return imObject;
 	}
 }
 	

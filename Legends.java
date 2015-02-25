@@ -10,8 +10,8 @@ import java.awt.*;
 class Legends {
 	private static int BOARD_SIZE = 50;
 	private static int UNITS_PER_TEAM = 9;
-	private static int WINDOW_HEIGHT = 800;
-	private static int WINDOW_WIDTH = 800;
+	private static int WINDOW_HEIGHT = 600;
+	private static int WINDOW_WIDTH = 600;
 	
 	// initiate game 
 	public static void main(String[] args) 
@@ -19,16 +19,6 @@ class Legends {
 		Legends program = new Legends();
 		program.initGame();
 	}
-
-	// initialize game representation
-	private void initGame() 
-	{
-		// init unit representations
-		OpenUnit[] teamnoord = createTeam("noordboiz");
-		OpenUnit[] teampopos = createTeam("popos");
-
-	}
-
 
 	// type 	= type of unit
 	// num 		= number of units
@@ -75,40 +65,30 @@ class Legends {
 		return units;
 	}
 
-<<<<<<< Updated upstream
-=======
+	// Create interface
+	public static void createUI() {
+		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
+
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		HexGrid applet = new HexGrid();
+		frame.getContentPane().add(applet, BorderLayout.CENTER);
+		applet.init();
+		frame.setResizable(false);
+		frame.pack();
+		frame.setSize(new Dimension(WINDOW_WIDTH,WINDOW_HEIGHT));
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
+
 	// initialize game representation
 	private void initGame() 
 	{	
-		HexGrid board = new HexGrid();
+		OpenUnit[] teamnoord = createTeam("noordboiz");
+		OpenUnit[] teampopos = createTeam("popoow");
+		createUI();
 
-		OpenUnit[] teamnoord = createTeam("humans");
-		OpenUnit[] teampopos = createTeam("orcs");
-
-
-		/*
-		// graphics
-		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
-		frame.setLocationRelativeTo(null);
-
-		GameBoard hexboard = new GameBoard();
 		int x = 700;
 		int y = 80;
-
-
-
-		frame.add(hexboard);
-		frame.setVisible(true);
-
-
-		for (OpenUnit unit : teamnoord)
-		{
-			y += 55;
-			unit.setImage(hexboard.addUnitGraphics("Swordsman", x, y));
-		}
-		*/
 	}
->>>>>>> Stashed changes
 }
