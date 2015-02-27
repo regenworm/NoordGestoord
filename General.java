@@ -8,6 +8,7 @@ public class General implements OpenUnit {
 	public Image imObject;
 	//private Random rGen = new Random();
 	public int[] coords;
+	public int movesLeft = 2;
 
 	public General(String team) 
 	{
@@ -65,5 +66,16 @@ public class General implements OpenUnit {
 	public void moveUnit(int[] coords)
 	{
 		this.coords = coords;
+	}
+
+	public String getType()
+	{
+		return this.type;
+	}
+
+
+	public int movesLeft()
+	{
+		return movesLeft;
 	}
 }

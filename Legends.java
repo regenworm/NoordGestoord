@@ -12,6 +12,9 @@ class Legends {
 	private static int UNITS_PER_TEAM = 9;
 	private static int WINDOW_HEIGHT = 800;
 	private static int WINDOW_WIDTH = 800;
+
+	private OpenUnit[] teamnoord;
+	private OpenUnit[] teampopos;
 	
 	// initiate game 
 	public static void main(String[] args) 
@@ -80,25 +83,69 @@ class Legends {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
-		OpenUnit[] teamnoord = createTeam("noordboiz");
-		OpenUnit[] teampopos = createTeam("popoow");
+		teamnoord = createTeam("noordboiz");
+		teampopos = createTeam("popoow");
 		int x = 500;
 		int y = 70;
 
 		for (OpenUnit unit : teamnoord)
 		{
 			y += 55;
-			unit.setImage(applet.addUnitGraphics("Swordsman", x, y));
+			unit.setImage(applet.addUnitGraphics(unit.getType(), x, y));
 		}
 
+		x = 100;
+		y = 70;
+		for (OpenUnit unit : teampopos)
+		{
+			y+= 55;
+			unit.setImage(applet.addUnitGraphics(unit.getType(), x, y));
+		}
+
+	}
+
+	private void takeTurns()
+	{
+		System.out.println("Turn : " );
+	}
+
+	private boolean checkWin()
+	{
+		boolean winner = true;
+		for (OpenUnit unit : teamnoord)
+		{
+			if ( unit != null)
+			{
+				winner = false;
+				break;
+			}
+		}
+
+		for (OpenUnit unit : teampopos)
+		{
+			if ( unit != null)
+			{
+				winner = false;
+				break;
+			}
+		}
+		return winner;
+	}
+
+	private void gameLoop()
+	{
+		boolean winner = false;
+		while(checkWin())
+		{
+			takeTurns();
+			checkWin();
+		}
 	}
 
 	// initialize game representation
 	private void initGame() 
 	{	
 		createUI();
-
-		int x = 700;
-		int y = 80;
+		//gameLoop();
 	}
 }

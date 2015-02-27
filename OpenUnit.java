@@ -9,5 +9,6 @@ public interface OpenUnit {
 	public void moveUnit(int[] coords);
 	public void die();
 	public int getHp();
-
+	public String getType();
+	public int movesLeft();
 }
