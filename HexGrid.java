@@ -43,7 +43,7 @@ public class HexGrid extends JApplet {
 	private ArrayList<Integer> adjacentTiles = new ArrayList<Integer>();	
 
 
-	private ArrayList<Shape> shapeList = new ArrayList<Shape>();
+	public ArrayList<Shape> shapeList = new ArrayList<Shape>();
 	private Polygon poly;
 	private Point mouse = new Point();
 
@@ -249,5 +249,15 @@ public class HexGrid extends JApplet {
 		}
 		return imObject;
 	}
+
+	public int[] getTileCoords(int j)
+	{
+		double x = shapeList.get(j).getBounds().getX()+15;
+		double y = shapeList.get(j).getBounds().getY()-5;
+		int[] xy = new int[2];
+		xy[0] = (int) x;
+		xy[1] = (int) y;
+		return xy;
+	} 
 }
 	

@@ -14,7 +14,7 @@ import java.awt.Shape;
 public class Hexagon {
 
 	// length of edge hexagon
-	private static int length = 30; 	
+	private static int length = 40; 	
 	private static int a = length;
 
 	// b = a cos(30)

@@ -7,8 +7,9 @@ public class Swordsman implements OpenUnit {
 	public String type = "Swordsman";
 	public Image imObject;
 	//private Random rGen = new Random();
-	public int[] coords;
+	public int coords;
 	public int movesLeft = 2;
+
 
 	public Swordsman(String teamname) 
 	{
@@ -63,7 +64,7 @@ public class Swordsman implements OpenUnit {
 		}
 	}
 
-	public void moveUnit(int[] coords)
+	public void moveUnit(int coords)
 	{
 		this.coords = coords;
 	}
@@ -76,5 +77,10 @@ public class Swordsman implements OpenUnit {
 	public int movesLeft()
 	{
 		return movesLeft;
+	}
+
+	public int getTileNum()
+	{
+		return coords;
 	}
 }

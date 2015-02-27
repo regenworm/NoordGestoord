@@ -30,24 +30,47 @@ class Legends {
 	private OpenUnit[] createUnits(String type, int num, OpenUnit[] units, String team)
 	{
 		if (type.equals("Swordsman"))
-		{
+		{		
+			int j;			
+			if(team == "noordboiz")
+			{
+				j = 5;
+			}
+			else
+			{
+				j = 50;
+			}
 			for (int i = 0; i < units.length && num != 0; i++)
 			{
 				if (units[i] == null)
 				{
 					units[i] = new Swordsman(team);
+
+					units[i].moveUnit(j);
 					num--;
+					j++;
 				}
 			}
 			return units;
 		}
 		else if (type.equals("General"))
-		{
+		{	
+			int j;				
+			if(team == "noordboiz")
+			{
+				j = 0;
+			}
+			else
+			{
+				j = 56;
+			}
 			for (int i = 0; i < units.length && num != 0; i++)
 			{
 				if (units[i] == null)
 				{
 					units[i] = new General(team);
+					units[i].moveUnit(j);
+					j+= 2;
 					num--;
 				}
 			}
@@ -85,28 +108,32 @@ class Legends {
 
 		teamnoord = createTeam("noordboiz");
 		teampopos = createTeam("popoow");
-		int x = 500;
-		int y = 70;
-
+		int[] xy;
+		int j = 0;
+		
 		for (OpenUnit unit : teamnoord)
 		{
-			y += 55;
-			unit.setImage(applet.addUnitGraphics(unit.getType(), x, y));
+			j = unit.getTileNum();
+			xy = applet.getTileCoords(j);
+			unit.setImage(applet.addUnitGraphics(unit.getType(), xy[0], xy[1]));
 		}
 
-		x = 100;
-		y = 70;
 		for (OpenUnit unit : teampopos)
 		{
-			y+= 55;
-			unit.setImage(applet.addUnitGraphics(unit.getType(), x, y));
+			j = unit.getTileNum();
+			xy = applet.getTileCoords(j);
+			unit.setImage(applet.addUnitGraphics(unit.getType(), xy[0], xy[1]));
 		}
 
 	}
 
 	private void takeTurns()
 	{
-		System.out.println("Turn : " );
+		Scanner userInputScanner = new Scanner(System.in);
+		System.out.println("Turn :  Team Noord");
+		int tilej = userInputScanner.nextInt();
+		int desty = userInputScanner.nextInt();
+
 	}
 
 	private boolean checkWin()
