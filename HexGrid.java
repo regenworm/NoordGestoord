@@ -40,6 +40,7 @@ public class HexGrid extends JApplet {
 	Rectangle adjacentCheck = new Rectangle();
 	Rectangle rect = new Rectangle();
 	private static boolean adjacent;
+	private ArrayList<Integer> adjacentTiles = new ArrayList<Integer>();	
 
 
 	private ArrayList<Shape> shapeList = new ArrayList<Shape>();
@@ -122,9 +123,8 @@ public class HexGrid extends JApplet {
 	    		
 	    		clickCount(i);			// adds to list clicked tiles
 	    		adjacentTiles(i, s);	// checkc adjacent tiles
-	    		adjacentTiles2(i, s);
 
-	    		g2.drawString("Adjacent: " + adjacenTile(), 10, 60);
+	    		g2.drawString("Adjacent: " + adjacentTiles.toString(), 10, 60);
 
 	    		// Check if already slected
 	   			if (selected == true && clicked.size() > 1
@@ -189,8 +189,13 @@ public class HexGrid extends JApplet {
 		return n;
 	}
 
-	public ArrayList<Integer> adjacentTiles2(int selected, Shape s) {
-		ArrayList<Integer> adjacent = new ArrayList();
+	/*
+	 * Creates rectangle that encapsulates the hexagon for the selected tile.
+	 * Checks if this rectangle intersects with the polygon from the previous
+	 * selected tile. Set boolean adjacent.
+	 */
+	public ArrayList<Integer> adjacentTiles(int selected, Shape s) {
+		adjacentTiles = new ArrayList<Integer>();
 		rect = s.getBounds();
 
 		int x = (int) rect.getX();
@@ -202,33 +207,11 @@ public class HexGrid extends JApplet {
 		for (int i = 0; i < 60; i++) {
 			Shape t = shapeList.get(i);
 			adjacentCheck = t.getBounds();
-			if (rectCopy.intersects(adjacentCheck) == true) {
-				adjacent.add(i);
+			if (rectCopy.intersects(adjacentCheck) == true && selected != i) {
+				adjacentTiles.add(i);
 			}
 		}
-		System.out.println(adjacent.toString());
-		return adjacent;
-	}
-
-	/*
-	 * Creates rectangle that encapsulates the hexagon for the selected tile.
-	 * Checks if this rectangle intersects with the polygon from the previous
-	 * selected tile. Set boolean adjacent.
-	 */
-	public void adjacentTiles(int selected, Shape s) {
-		rect = s.getBounds();
-
-		int x = (int) rect.getX();
-		int y = (int) rect.getY() - 2;
-		int h = (int) rect.getHeight() + 2;
-		int w = (int) rect.getWidth();
-		Rectangle rectCopy = new Rectangle(x, y, h, w);
-
-		Shape t = shapeList.get(lastClicked());
-		adjacentCheck = t.getBounds();
-
-		// set boolean
-		adjacent = rectCopy.intersects(adjacentCheck);
+		return adjacentTiles;
 	}
 
 	// Mouse click listener
