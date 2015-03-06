@@ -110,10 +110,6 @@ class Legends {
         layeredPane.add(gameboard, new Integer(50));
         layeredPane.add(unitlayer, new Integer(51));
 
-<<<<<<< Updated upstream
-		teamnoord = createTeam("noordboiz");
-		//teampopos = createTeam("popoow");
-=======
 
         frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         //frame.add( gameboard );
@@ -126,7 +122,6 @@ class Legends {
 
         teamnoord = createTeam("noord");
 		teampopos = createTeam("poops");
->>>>>>> Stashed changes
 		int[] xy;
 		int j = 0;
 		
