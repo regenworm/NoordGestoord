@@ -13,7 +13,7 @@ import java.awt.event.*;
  * Creates a HexGrid and registers mouse movements
  */
 
-public class HexGrid extends JApplet {
+public class HexGrid extends JPanel {
 	public Graphics graphics;
 
 	// Number of tiles
@@ -205,6 +205,7 @@ public class HexGrid extends JApplet {
 		}
 	}
 
+<<<<<<< Updated upstream
 	private void drawGeneral(Graphics g) {
 		ImageIcon general = new ImageIcon("pics/noordboi.png");
 		Image generalImage = general.getImage();
@@ -230,6 +231,8 @@ public class HexGrid extends JApplet {
 		return imObject;
 	}
 
+=======
+>>>>>>> Stashed changes
 	public int[] getTileCoords(int j)
 	{
 		double x = shapeList.get(j).getBounds().getX()+15;
@@ -238,6 +241,7 @@ public class HexGrid extends JApplet {
 		xy[0] = (int) x;
 		xy[1] = (int) y;
 		return xy;
-	} 
+	}
+
 }
 	
