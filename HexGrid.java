@@ -24,7 +24,7 @@ public class HexGrid extends JApplet {
 	final static int WIDTH = 600;
 	final static int HEIGHT = 600;
 
-	// Position first tile
+	// Position first tile (top left)
 	static int x = 100;
 	static int y = 100;
 	static int startX = x;
@@ -39,14 +39,13 @@ public class HexGrid extends JApplet {
 	// Adjacent tiles
 	Rectangle adjacentCheck = new Rectangle();
 	Rectangle rect = new Rectangle();
-	private static boolean adjacent;
 	private ArrayList<Integer> adjacentTiles = new ArrayList<Integer>();	
 
-
+	// List of tiles and shape
 	public ArrayList<Shape> shapeList = new ArrayList<Shape>();
 	private Polygon poly;
-	private Point mouse = new Point();
 
+	private Point mouse = new Point();
 
 	public void init() {
       	MouseListener ml = new MouseListener();
@@ -110,7 +109,7 @@ public class HexGrid extends JApplet {
 	    	n++;
 	    }
 
-	    // Check if mouse is in hexagon and return location/ action
+	    // Check if mouse is in hexagon and return location/action
 	    for (int i = 0; i < shapeList.size(); i++) {
 	    	Shape s = (Shape)shapeList.get(i);
 	    	
@@ -126,7 +125,7 @@ public class HexGrid extends JApplet {
 
 	    		g2.drawString("Adjacent: " + adjacentTiles.toString(), 10, 60);
 
-	    		// Check if already slected
+	    		// Check if already selected
 	   			if (selected == true && clicked.size() > 1
 	   					&& clicked.get(clicked.size() - 1)
 	   					== clicked.get(clicked.size() - 2)) {
@@ -158,11 +157,6 @@ public class HexGrid extends JApplet {
 		return clicked;
 	}
 
-	// Returns true if tile is adjacent
-	public static boolean adjacenTile() {
-		return adjacent;
-	}
-
 	// Returns last Clicked Tile
 	public static int lastTile() {
 		int n;
@@ -176,23 +170,10 @@ public class HexGrid extends JApplet {
 		return n;
 	}
 
-	// Return last clicked tile for adjacentTiles
-	public static int lastClicked() {
-		int n;
-
-		// insert exception ?
-		if (clicked.size() < 2) {
-			n = 0;
-		} else {
-			n = clicked.get(clicked.size() - 2);
-		}	
-		return n;
-	}
-
 	/*
-	 * Creates rectangle that encapsulates the hexagon for the selected tile.
-	 * Checks if this rectangle intersects with the polygon from the previous
-	 * selected tile. Set boolean adjacent.
+	 * Creates a rectangle that encapsulates the hexagon for the selected tile.
+	 * Checks if this rectangle intersects with adjacent tiles relative to the 
+	 * selected tile. Returns all adjacent tiles.
 	 */
 	public ArrayList<Integer> adjacentTiles(int selected, Shape s) {
 		adjacentTiles = new ArrayList<Integer>();
@@ -223,7 +204,6 @@ public class HexGrid extends JApplet {
 			int y = e.getY();
 		}
 	}
-
 
 	private void drawGeneral(Graphics g) {
 		ImageIcon general = new ImageIcon("pics/noordboi.png");

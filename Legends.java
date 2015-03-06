@@ -107,7 +107,7 @@ class Legends {
 		frame.setVisible(true);
 
 		teamnoord = createTeam("noordboiz");
-		teampopos = createTeam("popoow");
+		//teampopos = createTeam("popoow");
 		int[] xy;
 		int j = 0;
 		
