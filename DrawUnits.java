@@ -10,8 +10,12 @@ public class DrawUnits extends JPanel {
 		g.drawImage(generalImage, 300, 400, null);
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		this.graphics = g;
+		this.setBackground( new Color(100,100,20,64));
+		this.drawGeneral(g);
+		this.setOpaque(false);
 	}
 
 	public Image addUnitGraphics(String type, int posx, int posy)

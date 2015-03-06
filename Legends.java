@@ -97,35 +97,34 @@ class Legends {
 	// Create interface
 	public void createUI() {
 		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
+		Container c = frame.getLayeredPane();
 		HexGrid gameboard = new HexGrid();
 		DrawUnits unitlayer = new DrawUnits();
 		unitlayer.setOpaque(false);
-		unitlayer.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+		unitlayer.setSize(200,200);
 		gameboard.init();
 
-        
 
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
-        layeredPane.add(gameboard, new Integer(50));
-        layeredPane.add(unitlayer, new Integer(51));
+		c.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+		//c.add(unitlayer, new Integer(2));
+		c.add(gameboard, new Integer(1));
 
-
-        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        //frame.add( gameboard );
-        frame.pack();
-        frame.setVisible( true );
-        frame.setResizable(false);
-        frame.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
-        frame.setLocationRelativeTo(null);
-        frame.add(layeredPane);
-
-        teamnoord = createTeam("noord");
+		teamnoord = createTeam("noord");
 		teampopos = createTeam("poops");
 		int[] xy;
 		int j = 0;
+
+
+
+
+		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		frame.pack();
+		frame.setVisible( true );
+		frame.setResizable(false);
+		frame.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+		frame.setLocationRelativeTo(null);
 		
-		
+/*		
 		for (OpenUnit unit : teamnoord)
 		{
 			j = unit.getTileNum();
@@ -139,28 +138,7 @@ class Legends {
 			xy = gameboard.getTileCoords(j);
 			unit.setImage(unitlayer.addUnitGraphics(unit.getType(), xy[0], xy[1]));
 		}
-
-
-
-/*
-		JLayeredPane layers = new JLayeredPane();		HexGrid gameboard = new HexGrid();
-
-		// init gameboard
-		gameboard.init();
-
-		// add layers
-		layers.setPreferredSize(new Dimension(WINDOW_HEIGHT,WINDOW_WIDTH));
-        layeredPane.setBorder(BorderFactory.createTitledBorder(
-                            "Move the Mouse to Move Duke"));
-		layers.add(gameboard, 2);
-		layers.add(unitlayer, 1);
-		layers.setVisible(true);
-		System.out.println(layers.getLayer(unitlayer));
-		System.out.println(layers.getLayer(gameboard));
-
-
-		//OpenUnit temp = checkUnit(j);
-		gameLoop();*/
+*/
 
 	}
 
