@@ -100,22 +100,20 @@ class Legends {
 		Container c = frame.getLayeredPane();
 		HexGrid gameboard = new HexGrid();
 		DrawUnits unitlayer = new DrawUnits();
-		unitlayer.setOpaque(false);
-		unitlayer.setSize(200,200);
+		//unitlayer.setOpaque(false);
+		//unitlayer.setSize(200,200);
 		gameboard.init();
 
-
 		c.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
-		//c.add(unitlayer, new Integer(2));
+		c.add(unitlayer, new Integer(2));
 		c.add(gameboard, new Integer(1));
+		unitlayer.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+		gameboard.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		teamnoord = createTeam("noord");
-		teampopos = createTeam("poops");
+		teampopos = createTeam("popos");
 		int[] xy;
 		int j = 0;
-
-
-
 
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		frame.pack();
@@ -124,7 +122,7 @@ class Legends {
 		frame.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 		frame.setLocationRelativeTo(null);
 		
-/*		
+	
 		for (OpenUnit unit : teamnoord)
 		{
 			j = unit.getTileNum();
@@ -138,7 +136,7 @@ class Legends {
 			xy = gameboard.getTileCoords(j);
 			unit.setImage(unitlayer.addUnitGraphics(unit.getType(), xy[0], xy[1]));
 		}
-*/
+
 
 	}
 
