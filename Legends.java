@@ -10,8 +10,8 @@ import java.awt.*;
 class Legends {
 	private static int BOARD_SIZE = 61;
 	private static int UNITS_PER_TEAM = 9;
-	private static int WINDOW_HEIGHT = 800;
-	private static int WINDOW_WIDTH = 800;
+	private static int WINDOW_WIDTH = 800;	
+	private static int WINDOW_HEIGHT = 750;
 
 	private OpenUnit[] teamnoord;
 	private OpenUnit[] teampopos;
@@ -105,8 +105,8 @@ class Legends {
 		gameboard.init();
 
 		c.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
+		c.add(gameboard, new Integer(1));		
 		c.add(unitlayer, new Integer(2));
-		c.add(gameboard, new Integer(1));
 		unitlayer.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 		gameboard.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 

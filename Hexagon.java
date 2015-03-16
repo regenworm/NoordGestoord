@@ -24,6 +24,11 @@ public class Hexagon {
 	// c = a sin(30)
 	private static int c = a / 2;
 
+	public static int getHexDim() {
+		int dim = length;
+		return dim;
+	}
+
 	// Get x-coordinates of a hexagon
 	public static int[] getCordX(int x) {
 		int[] xcords;

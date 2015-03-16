@@ -25,8 +25,8 @@ public class HexGrid extends JPanel {
 	final static int HEIGHT = 600;
 
 	// Position first tile (top left)
-	static int x = 100;
-	static int y = 100;
+	static int x = (WIDTH / 2) - (int) (40 * 3.5);
+	static int y = (HEIGHT / 2) - (int) (40 * 5.8);
 	static int startX = x;
 	static int startY = y;
 
@@ -144,7 +144,6 @@ public class HexGrid extends JPanel {
 	   			}
 	    	}
 	    }
-
 	}
 
 	// Keeps track of clicked Tiles
@@ -214,6 +213,8 @@ public class HexGrid extends JPanel {
 		xy[1] = (int) y;
 		return xy;
 	}
+
+	
 
 }
 	
