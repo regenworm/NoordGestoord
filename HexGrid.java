@@ -42,7 +42,7 @@ public class HexGrid extends JPanel {
 	private ArrayList<Integer> adjacentTiles = new ArrayList<Integer>();	
 
 	// List of tiles and shape
-	public ArrayList<Shape> shapeList = new ArrayList<Shape>();
+	public static ArrayList<Shape> shapeList = new ArrayList<Shape>();
 	private Polygon poly;
 
 	private Point mouse = new Point();
@@ -214,7 +214,9 @@ public class HexGrid extends JPanel {
 		return xy;
 	}
 
-	
+	public static ArrayList<Shape> getTiles() {
+		return shapeList;
+	}
 
 }
 	
