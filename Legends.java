@@ -6,13 +6,14 @@
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 class Legends {
 	private static int BOARD_SIZE = 61;
 	private static int UNITS_PER_TEAM = 9;
 	private static int WINDOW_WIDTH = 800;	
 	private static int WINDOW_HEIGHT = 750;
-
+	private int currentturn = 1;
 	private OpenUnit[] teamnoord;
 	private OpenUnit[] teampopos;
 	private Integer[] unitlocations = new Integer[BOARD_SIZE];
@@ -30,9 +31,11 @@ class Legends {
 	// team 	= team of the units
 	private OpenUnit[] createUnits(String type, int num, OpenUnit[] units, String team)
 	{
+		// create swordsmen
 		if (type.equals("Swordsman"))
 		{		
 			int j;			
+			// add locations to class and list of locations
 			if(team == "noord")
 			{
 				j = 5;
@@ -94,24 +97,52 @@ class Legends {
 		return units;
 	}
 
+	private void resetMovesLeft()
+	{
+		for (OpenUnit unit : teamnoord) {
+			unit.resetMoves();
+		}
+
+		for (OpenUnit unit : teampopos) {
+			unit.resetMoves();
+		}
+	}
+
 	// Create interface
 	public void createUI() {
 		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
 		Container c = frame.getLayeredPane();
 		HexGrid gameboard = new HexGrid();
 		DrawUnits unitlayer = new DrawUnits();
-		//unitlayer.setOpaque(false);
-		//unitlayer.setSize(200,200);
-		gameboard.init();
 
+
+		// next turn: create button and container add to layeredpanel
+		JPanel buttoncontainer = new JPanel();
+		JButton nextturn = new JButton("Next Turn");
+		buttoncontainer.setBounds(WINDOW_WIDTH-100, 0, 100, 75);
+		buttoncontainer.add(nextturn);
+		//buttoncontainer.setBackground(new Color(60, 120, 230));
+		c.add(buttoncontainer, new Integer(3));
+
+		// next turn: reset moves left for units and change turn
+		nextturn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				resetMovesLeft();
+				currentturn *= -1;
+			}
+		});
+
+
+		
+		// create board gui
+		gameboard.init();
 		c.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 		c.add(gameboard, new Integer(1));		
 		c.add(unitlayer, new Integer(2));
 		unitlayer.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 		gameboard.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-		teamnoord = createTeam("noord");
-		teampopos = createTeam("popos");
 		int[] xy;
 		int j = 0;
 
@@ -121,77 +152,11 @@ class Legends {
 		frame.setResizable(false);
 		frame.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 		frame.setLocationRelativeTo(null);
-		
-	
-		for (OpenUnit unit : teamnoord)
-		{
-			j = unit.getTileNum();
-			xy = gameboard.getTileCoords(j);
-			unit.setImage(unitlayer.addUnitGraphics(unit.getType(), xy[0], xy[1]));
-		}
-
-		for (OpenUnit unit : teampopos)
-		{
-			j = unit.getTileNum();
-			xy = gameboard.getTileCoords(j);
-			unit.setImage(unitlayer.addUnitGraphics(unit.getType(), xy[0], xy[1]));
-		}
-
+		Image temp;
+		unitlayer.addUnitGraphics(unitlocations);
 
 	}
 
-	private void takeTurns()
-	{
-		int movesleft = 2;
-		int tilej;
-		int desty;
-		Scanner userInputScanner = new Scanner(System.in);
-		System.out.println("Turn :  Team Noord");
-		while (movesleft != 0)
-		{
-			System.out.println("Which piece do you want to move?\n");
-			tilej = userInputScanner.nextInt();
-			System.out.println("Where do you want to move it?\n");
-			desty = userInputScanner.nextInt();
-
-			tilej = unitlocations[tilej];
-			teamnoord[tilej].moveUnit(desty);
-			movesleft--;
-		}
-
-		System.out.println("Turn :  Team Popos");
-		while (movesleft != 0)
-		{
-			System.out.println("Which piece do you want to move?\n");
-			tilej = userInputScanner.nextInt();
-			while (unitlocations[tilej] == null)
-			{	
-				System.out.println("Which piece do you want to move?\n");
-				tilej = userInputScanner.nextInt();
-			}
-
-			System.out.println("Where do you want to move it?\n");
-			desty = userInputScanner.nextInt();
-			boolean adjacent = true;
-			while (adjacent)
-			{
-				System.out.println("Where do you want to move it?\n");
-				desty = userInputScanner.nextInt();
-				if (unitlocations[desty] == null)
-				{
-					tilej = unitlocations[tilej];
-					teampopos[tilej].moveUnit(desty);
-					movesleft--;
-				}
-				else if (unitlocations != null)
-				{
-					tilej = unitlocations[tilej];
-					desty = unitlocations[desty];
-					teampopos[tilej].attack(teamnoord[desty]);
-				}
-			}
-		}
-	}
 
 	private boolean checkWin()
 	{
@@ -216,19 +181,14 @@ class Legends {
 		return winner;
 	}
 
-	private void gameLoop()
-	{
-		boolean winner = false;
-		while(checkWin())
-		{
-			takeTurns();
-			checkWin();
-		}
-	}
-
 	// initialize game representation
 	private void initGame() 
 	{	
+		// create teams
+		teamnoord = createTeam("noord");
+		teampopos = createTeam("popos");
+
+		// create UI
 		createUI();
 	}
 }

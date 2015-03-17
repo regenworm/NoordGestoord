@@ -83,4 +83,9 @@ public class Swordsman implements OpenUnit {
 	{
 		return coords;
 	}
+
+	public void resetMoves()
+	{
+		movesLeft = 2;
+	}
 }

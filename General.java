@@ -83,4 +83,10 @@ public class General implements OpenUnit {
 	{
 		return coords;
 	}
+
+	
+	public void resetMoves()
+	{
+		movesLeft = 2;
+	}
 }

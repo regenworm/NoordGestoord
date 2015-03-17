@@ -12,4 +12,5 @@ public interface OpenUnit {
 	public String getType();
 	public int movesLeft();
 	public int getTileNum();
+	public void resetMoves();
 }

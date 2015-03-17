@@ -49,6 +49,7 @@ public class HexGrid extends JPanel {
 
 	public void init() {
       	MouseListener ml = new MouseListener();
+
       	addMouseListener(ml);
 
       	// Create list and fill with hexagon shapes
@@ -90,7 +91,7 @@ public class HexGrid extends JPanel {
 	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 	      	RenderingHints.VALUE_ANTIALIAS_ON);
 	    setBackground(new Color(60, 120, 230));
-	    g2.clearRect(0, 0, 700, 75);
+	    g2.clearRect(0, 0, 800, 75);
 	    g2.setPaint(Color.black);
 	   
 	    // Set starting position

@@ -3,37 +3,28 @@ import java.awt.*;
 
 public class DrawUnits extends JPanel {
 	Graphics graphics;
+	ImageIcon general = new ImageIcon("pics/noordboi.png");
+	Integer[] unitlocations;
 
-	private void drawGeneral(Graphics g) {
-		ImageIcon general = new ImageIcon("pics/noordboi.png");
+	private void DrawUnits(Integer[] list) {
+		unitlocations = list;
 		Image generalImage = general.getImage();
-		//g.drawImage(generalImage, 300, 400, null);
+		graphics.drawImage(generalImage, 300, 400, null);
+		repaint();
 	}
 
 	@Override
 	public void paint(Graphics g) {
 		this.graphics = g;
 		this.setBackground( new Color(100,100,20,64));
-		this.drawGeneral(g);
 		this.setOpaque(false);
 	}
 
-	public Image addUnitGraphics(String type, int posx, int posy)
+
+	public void addUnitGraphics(Integer[] list)
 	{
-		Image imObject;
-		if (type.equals("Swordsman"))
-		{
-			ImageIcon soldier = new ImageIcon("pics/noordboi.png");
-			imObject = soldier.getImage();
-			graphics.drawImage(imObject, posx, posy, null);
-		}
-		else //(type.equals("General"))
-		{
-			ImageIcon general = new ImageIcon("pics/Noord_G.png");
-			imObject = general.getImage();
-			this.graphics.drawImage(imObject, posx, posy, null);
-		}
-		return imObject;
+		unitlocations = list;
+		repaint();
 	}
 
 
