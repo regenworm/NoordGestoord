@@ -217,6 +217,64 @@ class Legends {
 		createUI();
 	}
 
+	// if unit is at tilenum, put as selectedUnit
+	private void selectUnit(int tilenum)
+	{
+		Integer tempf = unitlocations[tilenum];
+		if (tempf != null )
+		{
+			if (tempf < 0)
+			{
+				selectedUnit = teampopos[tempf+12];
+			} else {
+				selectedUnit = teamnoord[tempf];
+			}
+
+			clickonce++;
+		}
+
+		boolean setsel = true;
+		gameboard.setSelect(setsel);
+	}
+
+	// given tilenumber a selected unit is moved or attacks
+	private void moveOrAttack(int tilenum)
+	{
+		ArrayList<Integer> adjacentTiles = gameboard.returnAdjacent();
+
+		if (!adjacentTiles.contains(tilenum) )
+		{
+			// deselect everything
+			selectedUnit = null;
+			clickonce = 0;
+			boolean setsel = false;
+			gameboard.setSelect(setsel);
+			return;
+		}
+		if (unitlocations[tilenum] == null)
+		{
+			// move unit
+			if (selectedUnit.movesLeft() > 0) {
+				unitlocations[selectedUnit.getTileNum()] = null;
+				selectedUnit.moveUnit(tilenum);
+				if (selectedUnit.getTeam() == "noord"){
+					unitlocations[tilenum] = selectedUnit.getNum();
+				} else {
+					unitlocations[tilenum] = selectedUnit.getNum()-12;
+				}
+			}
+		} else {
+			// if clicked location is not empty
+		}
+
+		// deselect everything
+		selectedUnit = null;
+		clickonce = 0;
+		boolean setsel = false;
+		gameboard.setSelect(setsel);
+
+	}
+
 	// Mouse click listener
 	class MouseListener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
@@ -227,35 +285,20 @@ class Legends {
 			// get unit to take action with
 			if (clickonce < 1)
 			{
-				Integer tempf = unitlocations[tilenum];
-				if (tempf != null )
-				{
-					if (tempf < 0)
-					{
-						selectedUnit = teampopos[tempf+12];
-					} else {
-						selectedUnit = teamnoord[tempf];
-					}
-
-					clickonce++;
-				}
+				selectUnit(tilenum);
 
 			} // if second valid click move selected unit to new location
 			else {
-				// move unit
-				unitlocations[selectedUnit.getTileNum()] = null;
-				selectedUnit.moveUnit(tilenum);
-				unitlocations[tilenum] = selectedUnit.getNum();
-
-				selectedUnit = null;
-				clickonce = 0;
-
+				moveOrAttack(tilenum);
 			}
+
+			// if any tile is clicked add to clickcount
 			if (tilenum > -1 )
 			{
 				gameboard.clickCount(tilenum);
 			}
 
+			// update units on gameboard
 			ArrayList<int[]> xy = getCoordsTeams(gameboard);
 			unitlayer.addUnitGraphics(teamnoord,teampopos,xy);
 		}

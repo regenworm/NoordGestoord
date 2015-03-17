@@ -5,7 +5,6 @@ public interface OpenUnit {
 	public Image getImage();
 	public void reduceHp();
 	public int getAtk();
-	public void setImage(Image imObject);
 	public void attack(OpenUnit target);
 	public void moveUnit(int coords);
 	public void die();
@@ -15,4 +14,5 @@ public interface OpenUnit {
 	public int getTileNum();
 	public void resetMoves();
 	public int getNum();
+	public String getTeam();
 }

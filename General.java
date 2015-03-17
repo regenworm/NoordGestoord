@@ -9,7 +9,7 @@ public class General implements OpenUnit {
 	public Image imObject;
 	//private Random rGen = new Random();
 	public int coords;
-	public int movesLeft = 2;
+	public int movesLeft = 3;
 	public int number;
 
 	public General(String team,int num) 
@@ -25,10 +25,10 @@ public class General implements OpenUnit {
 		} else {
 			ImageIcon imGeneral = new ImageIcon("pics/Noord_sk8er.png");
 			this.imObject = imGeneral.getImage();
-			number = num+12;
+			number = num;
 		}
 	}
-	
+
 	public int getNum()
 	{
 		return number;
@@ -88,6 +88,8 @@ public class General implements OpenUnit {
 	public void moveUnit(int coords)
 	{
 		this.coords = coords;
+		movesLeft -= 1;
+
 	}
 
 	public String getType()
@@ -110,5 +112,10 @@ public class General implements OpenUnit {
 	public void resetMoves()
 	{
 		movesLeft = 2;
+	}
+
+	public String getTeam()
+	{
+		return team;
 	}
 }

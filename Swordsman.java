@@ -9,7 +9,7 @@ public class Swordsman implements OpenUnit {
 	public Image imObject;
 	//private Random rGen = new Random();
 	public int coords;
-	public int movesLeft = 2;
+	public int movesLeft = 3;
 	public int number;
 
 	public Swordsman(String team,int num) 
@@ -25,7 +25,7 @@ public class Swordsman implements OpenUnit {
 		} else {
 			ImageIcon imGeneral = new ImageIcon("pics/toilet.png");
 			this.imObject = imGeneral.getImage();
-			number = num+12;
+			number = num;
 
 		}
 	}
@@ -60,10 +60,6 @@ public class Swordsman implements OpenUnit {
 		return this.atk;
 	}
 
-	public void setImage(Image imObject)
-	{
-		this.imObject = imObject;
-	}
 
 	public void attack(OpenUnit target)
 	{
@@ -86,9 +82,15 @@ public class Swordsman implements OpenUnit {
 		}
 	}
 
-	public void moveUnit(int coordss)
+	public void moveUnit(int coords)
 	{
-		this.coords = coordss;
+		System.out.println("Move called:\n\n" 
+							+ "\nOld Location: " + this.coords 
+							+ "\nNew Location: " + coords
+							+ "\nMoves Left:" + movesLeft  + "\n\n");
+		
+		this.coords = coords;
+		movesLeft -= 1;
 	}
 
 	public String getType()
@@ -109,5 +111,10 @@ public class Swordsman implements OpenUnit {
 	public void resetMoves()
 	{
 		movesLeft = 2;
+	}
+
+	public String getTeam()
+	{
+		return team;
 	}
 }

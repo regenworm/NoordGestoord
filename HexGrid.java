@@ -124,13 +124,15 @@ public class HexGrid extends JPanel {
 			g2.setColor(Color.RED);
 
 			// paint selected tile flower
-			for (int tilenext : adjacentTiles)
-			{
-				temp = shapeList.get(tilenext);
-				g2.draw(temp);
+			if (selected) {
+				for (int tilenext : adjacentTiles)
+				{
+					temp = shapeList.get(tilenext);
+					g2.draw(temp);
+				}
+				g2.draw(s);	
+				selected = true;	
 			}
-			g2.draw(s);	
-			selected = true;	
 
 		}
 	}
@@ -194,6 +196,16 @@ public class HexGrid extends JPanel {
 			}
 		}
 		return adjacentTiles;
+	}
+
+	public ArrayList<Integer> returnAdjacent()
+	{
+		return adjacentTiles;
+	}
+
+	public void setSelect(boolean mode)
+	{
+		selected = mode;
 	}
 
 	public void setMousePoint(Point mousepoint)
