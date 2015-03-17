@@ -47,9 +47,6 @@ public class HexGrid extends JPanel {
 	private Point mouse = new Point();
 
 	public HexGrid() {
-		MouseListener ml = new MouseListener();
-
-		addMouseListener(ml);
 
 		// Create list and fill with hexagon shapes
 		int[] xcords;
@@ -138,6 +135,7 @@ public class HexGrid extends JPanel {
 		}
 	}
 
+	// get tile num from xy location
 	public int getTileNum(int x, int y) {
 		// Check if mouse is in hexagon and return location/action
 		for (int i = 0; i < shapeList.size(); i++) {
@@ -198,18 +196,9 @@ public class HexGrid extends JPanel {
 		return adjacentTiles;
 	}
 
-	// Mouse click listener
-	class MouseListener extends MouseAdapter {
-		public void mouseClicked(MouseEvent e) {
-			mouse = e.getPoint();
-
-			// add to clicked tiles
-			int x = e.getX();
-			int y = e.getY();
-
-			x = getTileNum(x,y);
-			clickCount(x);
-		}
+	public void setMousePoint(Point mousepoint)
+	{
+		mouse = mousepoint;
 	}
 
 	public int[] getTileCoords(int j)

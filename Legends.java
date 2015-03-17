@@ -137,6 +137,7 @@ class Legends {
 		});
 
 		MouseListener mltop = new MouseListener();
+		gameboard.addMouseListener(mltop);
 		
 		// create board gui
 		//gameboard.init();
@@ -209,17 +210,21 @@ class Legends {
 	// Mouse click listener
 	class MouseListener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
-			
 			if (clickonce < 1)
 			{
 				clickonce++;
-				System.out.println(tiles);
 			}
 			else {
 				clickonce = 0;
 				tiles[0] = gameboard.lastTile();
 			}
-
+			gameboard.setMousePoint(e.getPoint());
+			int tilenum = gameboard.getTileNum(e.getX(),e.getY());
+			if (tilenum > -1 )
+			{
+				gameboard.clickCount(tilenum);
+			}
 		}
 	}
+
 }
