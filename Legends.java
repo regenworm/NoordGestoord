@@ -328,6 +328,7 @@ class Legends {
 	private void selectUnit(int tilenum)
 	{
 		Integer tempf = unitlocations[tilenum];
+
 		// if value in unitlocation at tilenumber is not null
 		// fetch unit from unit array
 		if (tempf != null )

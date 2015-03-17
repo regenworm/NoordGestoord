@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
+import java.lang.Object.*;
 
 public class AStar {
 
@@ -12,47 +13,52 @@ public class AStar {
 
 	private static ArrayList<Integer> open = new ArrayList<Integer>();
 
-	private static int maxSearchDist = 5;
-
-//	private Node[] nodes;
-
-//	private AStarHeuristic heuristic;
+	private static int maxSearchDist = 100;
 
 	private static ArrayList<Shape> tiles = HexGrid.getTiles();
 
-	private static int startingTile;
+	private static int startingTile = 0;
 
 	private static int destinationTile = 10;
-/*
-	public AStar(arrayList<Shape> tiles, int startingTile, int destinationTile) {
-		this(tiles, startingTile, destinationTile);
-	}
-*/
+
 	private void AStar() {
 		findPath();
 	}
-
-
+/*
+	public static void findPath(int startingTile, int destinationTile) {
+		// clear lists
+		open.clear();
+		closed.clear();
+		// get adjacent tiles
+		Shape s = (Shape)tiles.get(startingTile);
+		ArrayList<Integer> adjacent = HexGrid.adjacentTiles(startingTile, s);
+		int cost = cost();	
+	}
+*/
 	public static void findPath() {
 		// Check if destinationTile is occupied
 		
 
 
+		// get clicked tile
 		startingTile = HexGrid.lastTile();	
 		int nextTile;
+		int randomTile;
+		int lastCost = 1000;
 		// Clear lists
 		closed.clear();
 		open.clear();
-		// Add StartingTile
+		// Add StartingTile to list
 		open.add(startingTile);
-
-		
+		Shape s = (Shape)tiles.get(startingTile);
+		ArrayList<Integer> adjacent = HexGrid.adjacentTiles(startingTile, s);
+		randomTile = getRandomTile(adjacent);
 
 		int maxDepth = 0;
 
 		while ((maxDepth < maxSearchDist) && (open.size() != 0)) {
-			Shape s = (Shape)tiles.get(startingTile);
-			ArrayList<Integer> adjacent = HexGrid.adjacentTiles(startingTile, s);
+			s = (Shape)tiles.get(startingTile);
+			adjacent = HexGrid.adjacentTiles(startingTile, s);
 			// System.out.println("adjacent tiles: " + adjacent.toString());
 			//closed.add(startingTile);
 
@@ -64,37 +70,41 @@ public class AStar {
 					continue;
 				} else {
 					open.add(adj);
-					open.remove(Integer.valueOf(startingTile));
-					
+					open.remove(Integer.valueOf(startingTile));	
 				}
-				
 			}
+
 //			if (closed.contains(startingTile)) {
 //				continue;
 //			} else {
 				closed.add(startingTile);
 //			}
 
+			int cost = cost();
+			System.out.println(cost);
 			// random path search
-			nextTile = getRandomTile(adjacent);
 
+			
+			//while (cost > lastCost) {
+				randomTile = getRandomTile(adjacent);
+			//} 
+			nextTile = randomTile;
 
-			System.out.println("new nexttile: " + startingTile);
+			lastCost = cost;
+			//System.out.println(lastCost);
+
 			startingTile = nextTile;
 			maxDepth += 1;
 			//System.out.println("open: " + open.toString());
-			System.out.println("closed: " + closed.toString());
+			//System.out.println("closed: " + closed.toString());
 
 			if (closed.contains(destinationTile)) {
 				System.out.println("path: " + closed.toString());
 				break;
 			} else {
 				continue;
-			}
-			
-		}
-
-
+			}	
+		}			
 	}
 
 	// Geeft random tile terug
@@ -103,14 +113,19 @@ public class AStar {
 		int nextTileOption = adjacent.get(r.nextInt(adjacent.size()));
 		return nextTileOption;
 	}
+
+	// Geeft de afstand tussen twee punten in pixels
+	private static int cost() {
+		int[] cordsStart = HexGrid.getTileCoords(startingTile);
+		int[] cordsDest = HexGrid.getTileCoords(destinationTile);
+		
+		int distX = cordsStart[0] - cordsDest[0];
+		int distY = cordsStart[1] - cordsDest[1];
+		int dist = (int) Math.sqrt(distX*distX + distY*distY);
+
+		return dist;
+	}
 }
-
-/*
-Kies een random nieuwe Tile
-Check of random Tile in 
-*/
-
-
 
 
 

@@ -225,7 +225,7 @@ public class HexGrid extends JPanel {
 	}
 
 	// return xy coordinates of a tile given a tilenumber
-	public int[] getTileCoords(int j)
+	public static int[] getTileCoords(int j)
 	{
 		double x = shapeList.get(j).getBounds().getX()+20;
 		double y = shapeList.get(j).getBounds().getY()-5;
