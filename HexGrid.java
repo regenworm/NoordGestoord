@@ -14,7 +14,6 @@ import java.awt.event.*;
  */
 
 public class HexGrid extends JPanel {
-	public Graphics graphics;
 
 	// Number of tiles
 	final static int BSIZEX = 9;
@@ -30,30 +29,29 @@ public class HexGrid extends JPanel {
 	static int startX = x;
 	static int startY = y;
 
-	// Tile selected§
+	// Tile selected
 	boolean selected = false;
 
 	// Tiles clicked
 	static ArrayList<Integer> clicked = new ArrayList<Integer>();
 
 	// Adjacent tiles
-	static Rectangle adjacentCheck = new Rectangle();
-	static Rectangle rect = new Rectangle();
-	static ArrayList<Integer> adjacentTiles = new ArrayList<Integer>();	
+	Rectangle adjacentCheck = new Rectangle();
+	Rectangle rect = new Rectangle();
+	private ArrayList<Integer> adjacentTiles = new ArrayList<Integer>();	
 
 	// List of tiles and shape
 	public static ArrayList<Shape> shapeList = new ArrayList<Shape>();
-	
 	private Polygon poly;
 
 	private Point mouse = new Point();
 
-	public void init() {
-      	MouseListener ml = new MouseListener();
+	public HexGrid() {
+		MouseListener ml = new MouseListener();
 
-      	addMouseListener(ml);
+		addMouseListener(ml);
 
-      	// Create list and fill with hexagon shapes
+		// Create list and fill with hexagon shapes
 		int[] xcords;
 		int[] ycords; 
 		int counter = 0;
@@ -87,66 +85,69 @@ public class HexGrid extends JPanel {
 
 	// Draw graphics 
 	public void paint(Graphics g) {
-		this.graphics = g;
-	    Graphics2D g2 = (Graphics2D) g;
-	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-	      	RenderingHints.VALUE_ANTIALIAS_ON);
-	    setBackground(new Color(60, 120, 230));
-	    g2.clearRect(0, 0, 800, 75);
-	    g2.setPaint(Color.black);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+			RenderingHints.VALUE_ANTIALIAS_ON);
+		setBackground(new Color(60, 120, 230));
+		g2.clearRect(0, 0, 800, 75);
+		g2.setPaint(Color.black);
 	   
-	    // Set starting position
-	    x = startX;
-	    y = startY;
-	    int n = 0;
+		// Set starting position
+		x = startX;
+		y = startY;
+		int n = 0;
 
-	    // Iterate shapelist and draw objects
-	    while(n < shapeList.size()) {
-	    	Shape s = (Shape)shapeList.get(n);
-	    	g2.setStroke(new BasicStroke(3));
-	    	g2.setColor(new Color(50, 250, 50));
-	    	g2.fill(s);
+		// Iterate shapelist and draw objects
+		while(n < shapeList.size()) {
+			Shape s = (Shape)shapeList.get(n);
+			g2.setStroke(new BasicStroke(3));
+			g2.setColor(new Color(50, 250, 50));
+			g2.fill(s);
 			g2.setColor(new Color(10, 80, 10));
-	    	g2.draw(s);
-	    	n++;
-	    }
+			g2.draw(s);
+			n++;
+		}
+		//System.out.println(getTileNum(mouse.x,mouse.y));
+		int test = getTileNum(mouse.x,mouse.y);
+		if (test > -1)
+		{
+			// get clicked tile and init var
+			Shape s = shapeList.get(test);
+			Shape temp;
+			// get adjacent tiles
+			adjacentTiles(test,s);
 
-	    // Check if mouse is in hexagon and return location/action
-	    for (int i = 0; i < shapeList.size(); i++) {
-	    	Shape s = (Shape)shapeList.get(i);
-	    	
-	    	// Rectangle rect = s.getBounds();
-	    	if (s.contains(mouse.x, mouse.y) == true) {
-	    		g2.setColor(Color.BLACK);
+			// write
+			g2.drawString("Tile: " + test, 10, 20);
+			g2.drawString("Last clicked Tile: " + clicked, 10, 40);
+			g2.drawString("Adjacent: " + adjacentTiles.toString(), 10, 60);
+			
+			// set paint brush
+			g2.setStroke(new BasicStroke(3));
+			g2.setColor(Color.RED);
 
-	    		g2.drawString("Tile: " + i, 10, 20);
-	    		g2.drawString("Last clicked Tile: " + lastTile(), 10, 40);
-	    		
-	    		clickCount(i);			// adds to list clicked tiles
-	    		adjacentTiles(i, s);	// checkc adjacent tiles
+			// paint selected tile flower
+			for (int tilenext : adjacentTiles)
+			{
+				temp = shapeList.get(tilenext);
+				g2.draw(temp);
+			}
+			g2.draw(s);	
+			selected = true;	
 
-	    		g2.drawString("Adjacent: " + adjacentTiles.toString(), 10, 60);
+		}
+	}
 
-	    		// Check if already selected
-	   			if (selected == true && clicked.size() > 1
-	   					&& clicked.get(clicked.size() - 1)
-	   					== clicked.get(clicked.size() - 2)) {
-
-	   				g2.setStroke(new BasicStroke(3));
-	   				g2.setColor(new Color(10, 80, 10));
-	   				g2.draw(s);
-	   				selected = false;
-
-	   			// New selection	
-	   			} else {
-	   				g2.setStroke(new BasicStroke(3));
-	    			g2.setColor(Color.RED);
-	    			g2.draw(s);	
-	    			selected = true;	
-	    			AStar.findPath();
-	   			}
-	    	}
-	    }
+	public int getTileNum(int x, int y) {
+		// Check if mouse is in hexagon and return location/action
+		for (int i = 0; i < shapeList.size(); i++) {
+			Shape s = (Shape)shapeList.get(i);	
+			// Rectangle rect = s.getBounds();
+			if (s.contains(mouse.x, mouse.y) == true) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	// Keeps track of clicked Tiles
@@ -177,7 +178,7 @@ public class HexGrid extends JPanel {
 	 * Checks if this rectangle intersects with adjacent tiles relative to the 
 	 * selected tile. Returns all adjacent tiles.
 	 */
-	public static ArrayList<Integer> adjacentTiles(int selected, Shape s) {
+	public ArrayList<Integer> adjacentTiles(int selected, Shape s) {
 		adjacentTiles = new ArrayList<Integer>();
 		rect = s.getBounds();
 
@@ -201,9 +202,13 @@ public class HexGrid extends JPanel {
 	class MouseListener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
 			mouse = e.getPoint();
-			e.getComponent().repaint();
+
+			// add to clicked tiles
 			int x = e.getX();
 			int y = e.getY();
+
+			x = getTileNum(x,y);
+			clickCount(x);
 		}
 	}
 
@@ -222,4 +227,3 @@ public class HexGrid extends JPanel {
 	}
 
 }
-	

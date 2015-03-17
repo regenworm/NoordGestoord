@@ -17,6 +17,9 @@ class Legends {
 	private OpenUnit[] teamnoord;
 	private OpenUnit[] teampopos;
 	private Integer[] unitlocations = new Integer[BOARD_SIZE];
+	public int clickonce = 0;
+	public int[] tiles = new int[2];
+	public HexGrid gameboard;
 	
 	// initiate game 
 	public static void main(String[] args) 
@@ -112,7 +115,7 @@ class Legends {
 	public void createUI() {
 		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
 		Container c = frame.getLayeredPane();
-		HexGrid gameboard = new HexGrid();
+		gameboard = new HexGrid();
 		DrawUnits unitlayer = new DrawUnits();
 		AStar pathfind = new AStar();
 
@@ -133,10 +136,10 @@ class Legends {
 			}
 		});
 
-
+		MouseListener mltop = new MouseListener();
 		
 		// create board gui
-		gameboard.init();
+		//gameboard.init();
 		c.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 		c.add(gameboard, new Integer(1));		
 		c.add(unitlayer, new Integer(2));
@@ -152,7 +155,6 @@ class Legends {
 		frame.setLocationRelativeTo(null);
 		ArrayList<int[]> xy = getCoordsTeams(gameboard);
 		unitlayer.addUnitGraphics(teamnoord,teampopos,xy);
-
 	}
 
 	private ArrayList<int[]> getCoordsTeams(HexGrid gameboard)
@@ -202,5 +204,22 @@ class Legends {
 
 		// create UI
 		createUI();
+	}
+
+	// Mouse click listener
+	class MouseListener extends MouseAdapter {
+		public void mouseClicked(MouseEvent e) {
+			
+			if (clickonce < 1)
+			{
+				clickonce++;
+				System.out.println(tiles);
+			}
+			else {
+				clickonce = 0;
+				tiles[0] = gameboard.lastTile();
+			}
+
+		}
 	}
 }
