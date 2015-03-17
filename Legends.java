@@ -173,10 +173,18 @@ class Legends {
 		ArrayList<int[]> xy = new ArrayList<int[]>();
 		for (OpenUnit unit : teamnoord)
 		{
+			if (unit == null)
+			{
+				continue;
+			}
 			xy.add(gameboard.getTileCoords(unit.getTileNum()));
 		}
 		for (OpenUnit unit : teampopos)
 		{
+			if (unit == null)
+			{
+				continue;
+			}
 			xy.add(gameboard.getTileCoords(unit.getTileNum()));
 		}
 		return xy;
