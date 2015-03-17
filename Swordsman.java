@@ -120,7 +120,7 @@ public class Swordsman implements OpenUnit {
 
 	public void resetMoves()
 	{
-		movesLeft = 10;
+		movesLeft = 2;
 	}
 
 	public String getTeam()

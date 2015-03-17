@@ -8,28 +8,60 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+// main class, start this to start the game
 class Legends {
+	// number of tiles on gameboard
 	private static int BOARD_SIZE = 61;
+
+	// number of units per team playing
 	private static int UNITS_PER_TEAM = 9;
+
+	// width of window
 	private static int WINDOW_WIDTH = 800;	
+
+	// height of window
 	private static int WINDOW_HEIGHT = 750;
+	
+	// if currentturn is 1 teamnoord is playing
+	// otherwise the AI is playing
 	private int currentturn = 1;
+
+	// array of units for each team
+	// these units are also used to create visual
+	// representations on the gui
 	private OpenUnit[] teamnoord;
 	private OpenUnit[] teampopos;
+
+	// list of tiles that are occupied
+	// the index of the array is the tilenumber on the board
+	// the value corresponds to the index in the array of units
+	// if the value is below 0, add 12 to the value to get the
+	// corresponding index for teampopos (values below 0 are teampopos)
+	// if the value is 0 or above, this corresponds to the
+	// index for teamnoord (values above 0 are teamnoord units)
 	private Integer[] unitlocations = new Integer[BOARD_SIZE];
+	
+	// determines whether this is the first click or the second
 	public int clickonce = 0;
-	public int[] tiles = new int[2];
+
+	// gameboard + gameboard gui
 	public HexGrid gameboard;
+
+	// layer on which units are drawn
 	public DrawUnits unitlayer;
+
+	// this is the currently selected unit
 	public OpenUnit selectedUnit;
 
-	// initiate game 
+	// initiate game
+	// no commandline arguments possible
 	public static void main(String[] args) 
 	{
 		Legends program = new Legends();
 		program.initGame();
 	}
 
+	// create an array of units
 	// type 	= type of unit
 	// num 		= number of units
 	// units 	= the units that are made
@@ -41,7 +73,9 @@ class Legends {
 		{		
 			int j;			
 			// add locations to class and list of locations
-			if(team == "noord")
+			// swordsmen start at the 5th tile for noord
+			// swords
+			if(team == "noord") 
 			{
 				j = 5;
 			}

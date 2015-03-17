@@ -116,7 +116,7 @@ public class HexGrid extends JPanel {
 
 			// write
 			g2.drawString("Tile: " + test, 10, 20);
-			g2.drawString("Last clicked Tile: " + clicked, 10, 40);
+			g2.drawString("Last clicked Tile: " + lastTile(), 10, 40);
 			g2.drawString("Adjacent: " + adjacentTiles.toString(), 10, 60);
 			
 			// set paint brush
