@@ -39,9 +39,14 @@ public class General implements OpenUnit {
 		return imObject;
 	}
 	
-	public void reduceHp()
+	public boolean reduceHp()
 	{
 		this.hp -= 1;
+		if (this.hp == 0) {
+			die();
+			return true;
+		}
+		return false;
 	}
 
 	public int getHp()
@@ -64,11 +69,16 @@ public class General implements OpenUnit {
 		this.imObject = imObject;
 	}
 
-	public void attack(OpenUnit target)
+	public boolean attack(OpenUnit target)
 	{
 		int atkTarget = target.getAtk();
 		double pHit = 1 / (1 + Math.exp(0.4*(this.atk-atkTarget)));
-		int hit = 0;//rGen.nextInt(pHit*100);
+		int hit = 0;
+		double d = Math.random();
+		if (d < pHit)
+		{
+			hit = 1;
+		}
 
 		if (hit == 0)
 		{
@@ -77,12 +87,12 @@ public class General implements OpenUnit {
 		else 
 		{
 			System.out.println("Hit!");
-			target.reduceHp();
-			if (target.getHp() == 0)
-			{
-				target.die();
+			if (target.reduceHp()) {
+				return true;
 			}
 		}
+
+		return false;
 	}
 
 	public void moveUnit(int coords)

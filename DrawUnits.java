@@ -21,6 +21,10 @@ public class DrawUnits extends JPanel {
 			int[] temp;
 			for (OpenUnit unit : noord)
 			{
+				if (unit == null)
+				{
+					continue;
+				}
 				temp = it.next();
 				imtemp = unit.getImage();
 
@@ -28,6 +32,10 @@ public class DrawUnits extends JPanel {
 			}
 			for (OpenUnit unit : popos)
 			{
+				if (unit == null)
+				{
+					continue;
+				}
 				temp = it.next();
 				imtemp = unit.getImage();
 

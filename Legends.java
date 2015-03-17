@@ -241,23 +241,39 @@ class Legends {
 	private void moveOrAttack(int tilenum)
 	{
 		ArrayList<Integer> adjacentTiles = gameboard.returnAdjacent();
-
-		if (!adjacentTiles.contains(tilenum) )
+		String currentteam = selectedUnit.getTeam();
+		
+		// quit if not turn of current unit team
+		if (currentteam == "noord")
 		{
-			// deselect everything
-			selectedUnit = null;
-			clickonce = 0;
-			boolean setsel = false;
-			gameboard.setSelect(setsel);
+			if (currentturn == -1)
+			{
+				return;
+			}
+		} else if (currentturn == 1){
 			return;
 		}
+
+
+		// quit if selected destination not adjacent
+		if (!adjacentTiles.contains(tilenum) )
+		{
+			return;
+		}
+
+		// if destination is empty
 		if (unitlocations[tilenum] == null)
 		{
-			// move unit
+			// move unit if moves left
 			if (selectedUnit.movesLeft() > 0) {
+				// remove old location from unit list
 				unitlocations[selectedUnit.getTileNum()] = null;
+
+				// move unit
 				selectedUnit.moveUnit(tilenum);
-				if (selectedUnit.getTeam() == "noord"){
+
+				// update unitlist dependent on team
+				if (currentteam == "noord"){
 					unitlocations[tilenum] = selectedUnit.getNum();
 				} else {
 					unitlocations[tilenum] = selectedUnit.getNum()-12;
@@ -265,13 +281,26 @@ class Legends {
 			}
 		} else {
 			// if clicked location is not empty
-		}
+			// quit if attacking same team
+			OpenUnit temp = selectedUnit;
+			selectUnit(tilenum);
+			if (currentteam == selectedUnit.getTeam())
+			{
+				return;
+			}
 
-		// deselect everything
-		selectedUnit = null;
-		clickonce = 0;
-		boolean setsel = false;
-		gameboard.setSelect(setsel);
+			if (temp.attack(selectedUnit))
+			{
+				unitlocations[selectedUnit.getTileNum()] = null;
+				if (currentteam == "noord")
+				{
+					teampopos[selectedUnit.getNum()] = null;
+
+				} else {
+					teamnoord[selectedUnit.getNum()] = null;
+				}
+			}
+		}
 
 	}
 
@@ -290,6 +319,12 @@ class Legends {
 			} // if second valid click move selected unit to new location
 			else {
 				moveOrAttack(tilenum);
+				
+				// deselect everything
+				selectedUnit = null;
+				clickonce = 0;
+				boolean setsel = false;
+				gameboard.setSelect(setsel);
 			}
 
 			// if any tile is clicked add to clickcount

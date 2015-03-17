@@ -3,9 +3,9 @@ import java.awt.Image;
 
 public interface OpenUnit {
 	public Image getImage();
-	public void reduceHp();
+	public boolean reduceHp();
 	public int getAtk();
-	public void attack(OpenUnit target);
+	public boolean attack(OpenUnit target);
 	public void moveUnit(int coords);
 	public void die();
 	public int getHp();
