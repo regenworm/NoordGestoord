@@ -20,7 +20,9 @@ class Legends {
 	public int clickonce = 0;
 	public int[] tiles = new int[2];
 	public HexGrid gameboard;
-	
+	public DrawUnits unitlayer;
+	public OpenUnit selectedUnit;
+
 	// initiate game 
 	public static void main(String[] args) 
 	{
@@ -51,10 +53,14 @@ class Legends {
 			{
 				if (units[i] == null)
 				{
-					units[i] = new Swordsman(team);
+					units[i] = new Swordsman(team,i);
 
 					units[i].moveUnit(j);
-					unitlocations[j] = i;
+					if (team == "noord") {
+						unitlocations[j] = i;
+					} else {
+						unitlocations[j] = i-12;
+					}
 					num--;
 					j++;
 				}
@@ -76,9 +82,13 @@ class Legends {
 			{
 				if (units[i] == null)
 				{
-					units[i] = new General(team);
+					units[i] = new General(team,i);
 					units[i].moveUnit(j);
-					unitlocations[j] = i;
+					if (team == "noord") {
+						unitlocations[j] = i;
+					} else {
+						unitlocations[j] = i-12;
+					}
 					j+= 2;
 					num--;
 				}
@@ -116,7 +126,7 @@ class Legends {
 		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
 		Container c = frame.getLayeredPane();
 		gameboard = new HexGrid();
-		DrawUnits unitlayer = new DrawUnits();
+		unitlayer = new DrawUnits();
 		AStar pathfind = new AStar();
 
 		// next turn: create button and container add to layeredpanel
@@ -210,20 +220,41 @@ class Legends {
 	// Mouse click listener
 	class MouseListener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
-			if (clickonce < 1)
-			{
-				clickonce++;
-			}
-			else {
-				clickonce = 0;
-				tiles[0] = gameboard.lastTile();
-			}
+			// get tilenumber and set mouse points in gameboard
 			gameboard.setMousePoint(e.getPoint());
 			int tilenum = gameboard.getTileNum(e.getX(),e.getY());
+
+			// get unit to take action with
+			if (clickonce < 1)
+			{
+				Integer tempf = unitlocations[tilenum];
+				if (tempf != null )
+				{
+					if (tempf < 0)
+					{
+						selectedUnit = teampopos[tempf+12];
+					} else {
+						selectedUnit = teamnoord[tempf];
+					}
+
+					clickonce++;
+				}
+
+			} // if second valid click move selected unit to new location
+			else {
+				// move unit
+				selectedUnit.moveUnit(tilenum);
+				selectedUnit = null;
+				clickonce = 0;
+
+			}
 			if (tilenum > -1 )
 			{
 				gameboard.clickCount(tilenum);
 			}
+
+			ArrayList<int[]> xy = getCoordsTeams(gameboard);
+			unitlayer.addUnitGraphics(teamnoord,teampopos,xy);
 		}
 	}
 

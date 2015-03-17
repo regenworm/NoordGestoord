@@ -10,10 +10,8 @@ public class DrawUnits extends JPanel {
 	OpenUnit[] popos;
 	ArrayList<int[]> xy;
 
-	private void DrawUnits() {
-		//unitlocations = list;	
-	}
 
+	// paint units
 	@Override
 	public void paint(Graphics g) {
 		this.setOpaque(false);

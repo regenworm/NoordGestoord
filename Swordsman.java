@@ -9,10 +9,10 @@ public class Swordsman implements OpenUnit {
 	public Image imObject;
 	//private Random rGen = new Random();
 	public int coords;
-	public int[] xycoords;
 	public int movesLeft = 2;
+	public int number;
 
-	public Swordsman(String team) 
+	public Swordsman(String team,int num) 
 	{
 		this.hp = 4;
 		this.atk = 6;
@@ -21,11 +21,18 @@ public class Swordsman implements OpenUnit {
 		{
 			ImageIcon imGeneral = new ImageIcon("pics/noordboi.png");
 			this.imObject = imGeneral.getImage();
+			number = num;
 		} else {
 			ImageIcon imGeneral = new ImageIcon("pics/toilet.png");
 			this.imObject = imGeneral.getImage();
+			number = num+12;
 
 		}
+	}
+
+	public int getNum()
+	{
+		return number;
 	}
 
 	public Image getImage()
@@ -79,9 +86,9 @@ public class Swordsman implements OpenUnit {
 		}
 	}
 
-	public void moveUnit(int coords)
+	public void moveUnit(int coordss)
 	{
-		this.coords = coords;
+		this.coords = coordss;
 	}
 
 	public String getType()

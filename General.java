@@ -10,8 +10,9 @@ public class General implements OpenUnit {
 	//private Random rGen = new Random();
 	public int coords;
 	public int movesLeft = 2;
+	public int number;
 
-	public General(String team) 
+	public General(String team,int num) 
 	{
 		this.hp = 5;
 		this.atk = 8;
@@ -20,11 +21,17 @@ public class General implements OpenUnit {
 		{
 			ImageIcon imGeneral = new ImageIcon("pics/Noord_G.png");
 			this.imObject = imGeneral.getImage();
+			number = num;
 		} else {
 			ImageIcon imGeneral = new ImageIcon("pics/Noord_sk8er.png");
 			this.imObject = imGeneral.getImage();
-
+			number = num+12;
 		}
+	}
+	
+	public int getNum()
+	{
+		return number;
 	}
 
 	public Image getImage()
