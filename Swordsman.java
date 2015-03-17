@@ -75,7 +75,7 @@ public class Swordsman implements OpenUnit {
 	// else return false
 	public boolean reduceHp()
 	{
-		this.hp -= 1;
+		this.hp -= 6;
 		if (this.hp <= 0) {
 			die();
 			return true;
@@ -110,7 +110,7 @@ public class Swordsman implements OpenUnit {
 		int atkTarget = target.getAtk();
 
 		// chance of hitting
-		double pHit = 1 / (1 + Math.exp(0.4*(getAtk()-atkTarget)));
+		double pHit = 1 / (1 + Math.exp(0.4*(getAtk()-atkTarget)))+1;
 		
 		// succes of attack
 		int hit = 0;

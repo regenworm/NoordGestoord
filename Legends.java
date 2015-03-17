@@ -41,6 +41,9 @@ class Legends {
 	// index for teamnoord (values above 0 are teamnoord units)
 	private Integer[] unitlocations = new Integer[BOARD_SIZE];
 
+	// container which contains all jpanels
+	Container c;
+
 	// gameboard + gameboard gui
 	public HexGrid gameboard;
 
@@ -174,7 +177,7 @@ class Legends {
 		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
 
 		// container for jpanels
-		Container c = frame.getLayeredPane();
+		c = frame.getLayeredPane();
 
 		// jpanels
 		gameboard = new HexGrid();
@@ -274,6 +277,7 @@ class Legends {
 	private boolean checkWin()
 	{
 		boolean winner = true;
+		String winteam = "";
 		for (OpenUnit unit : teamnoord)
 		{
 			if ( unit != null)
@@ -281,16 +285,31 @@ class Legends {
 				winner = false;
 				break;
 			}
+			winteam = "Noord";
 		}
-
-		for (OpenUnit unit : teampopos)
-		{
-			if ( unit != null)
+		if (!winner){
+			winner = true;
+			for (OpenUnit unit : teampopos)
 			{
-				winner = false;
-				break;
+				if ( unit != null)
+				{
+					winner = false;
+					break;
+				}
+				winteam = "Popos";
 			}
 		}
+
+		if (winner)
+		{
+			JPanel win = new JPanel();
+			JLabel winstring = new JLabel("<html>The winning team is:<br>"+ winteam+"</html>");
+			win.add(winstring);
+			win.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+			c.add(win, new Integer(5));
+
+		}
+
 		return winner;
 	}
 

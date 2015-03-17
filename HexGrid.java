@@ -196,7 +196,7 @@ public class HexGrid extends JPanel {
 		int w = (int) rect.getWidth();
 		Rectangle rectCopy = new Rectangle(x, y, h, w);
 
-		for (int i = 0; i < 60; i++) {
+		for (int i = 0; i < 61; i++) {
 			Shape t = shapeList.get(i);
 			adjacentCheck = t.getBounds();
 			if (rectCopy.intersects(adjacentCheck) == true && selected != i) {

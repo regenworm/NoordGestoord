@@ -74,7 +74,7 @@ public class General implements OpenUnit {
 	// else return false
 	public boolean reduceHp()
 	{
-		this.hp -= 1;
+		this.hp -= 6;
 		if (this.hp <= 0) {
 			die();
 			return true;
