@@ -12,7 +12,7 @@ public class AStar {
 
 	private static ArrayList<Integer> open = new ArrayList<Integer>();
 
-	private static int maxSearchDist = 10;
+	private static int maxSearchDist = 5;
 
 //	private Node[] nodes;
 
@@ -22,7 +22,7 @@ public class AStar {
 
 	private static int startingTile;
 
-	private static int destinationTile = 60;
+	private static int destinationTile = 10;
 /*
 	public AStar(arrayList<Shape> tiles, int startingTile, int destinationTile) {
 		this(tiles, startingTile, destinationTile);
@@ -53,21 +53,45 @@ public class AStar {
 		while ((maxDepth < maxSearchDist) && (open.size() != 0)) {
 			Shape s = (Shape)tiles.get(startingTile);
 			ArrayList<Integer> adjacent = HexGrid.adjacentTiles(startingTile, s);
-			System.out.println("adjacent tiles: " + adjacent.toString());
+			// System.out.println("adjacent tiles: " + adjacent.toString());
+			//closed.add(startingTile);
 
+			for (int i = 0; i < adjacent.size(); i++)
+			{
+				int adj = adjacent.get(i);
+
+				if (open.contains(adj) || closed.contains(adj)) {
+					continue;
+				} else {
+					open.add(adj);
+					open.remove(Integer.valueOf(startingTile));
+					
+				}
+				
+			}
+//			if (closed.contains(startingTile)) {
+//				continue;
+//			} else {
+				closed.add(startingTile);
+//			}
+
+			// random path search
 			nextTile = getRandomTile(adjacent);
 
-			if (open.contains(nextTile)) {
 
-			} else {
-				closed.add(nextTile);				
-			}
-			System.out.println("new nexttile: " + nextTile);
+			System.out.println("new nexttile: " + startingTile);
 			startingTile = nextTile;
 			maxDepth += 1;
-			System.out.println(closed.toString());
+			//System.out.println("open: " + open.toString());
+			System.out.println("closed: " + closed.toString());
 
-
+			if (closed.contains(destinationTile)) {
+				System.out.println("path: " + closed.toString());
+				break;
+			} else {
+				continue;
+			}
+			
 		}
 
 

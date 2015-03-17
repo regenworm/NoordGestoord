@@ -176,7 +176,7 @@ class Legends {
 		unitlayer = new DrawUnits();
 
 		// ai
-		AStar pathfind = new AStar();
+		// AStar pathfind = new AStar();
 
 		// create a button to go to next turn
 		JPanel buttoncontainer = new JPanel();
@@ -192,6 +192,7 @@ class Legends {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				resetMovesLeft();
+				AStar.findPath();
 				currentturn *= -1;
 				checkWin();
 			}
