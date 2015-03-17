@@ -1,6 +1,7 @@
 import java.util.*;
 import java.awt.Image;
 
+// interface for units
 public interface OpenUnit {
 	public Image getImage();
 	public boolean reduceHp();

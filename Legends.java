@@ -83,8 +83,11 @@ class Legends {
 			{
 				j = 50;
 			}
+			// create swordsmen and add locations,add to list of locations(int[] unitlocations) and number in array of units
+			// 
 			for (int i = 0; i < units.length && num != 0; i++)
 			{
+				// if an entry is use it
 				if (units[i] == null)
 				{
 					units[i] = new Swordsman(team,i);
@@ -93,14 +96,17 @@ class Legends {
 					if (team == "noord") {
 						unitlocations[j] = i;
 					} else {
+						// if teampopos decrement value bij 12 so it is under 0 and 
+						// recognizable as teampopos units
 						unitlocations[j] = i-12;
 					}
 					num--;
 					j++;
 				}
 			}
+			// return array to which units are now added
 			return units;
-		}
+		} // principle of swordsman applies to general as well
 		else if (type.equals("General"))
 		{	
 			int j;				
@@ -144,8 +150,10 @@ class Legends {
 		return units;
 	}
 
+	// reset the number of moves a unit can make
 	private void resetMovesLeft()
 	{
+		// for each unit on each team reset the moves that can be made
 		for (OpenUnit unit : teamnoord) {
 			unit.resetMoves();
 		}
@@ -157,51 +165,68 @@ class Legends {
 
 	// Create interface
 	public void createUI() {
+		// init variables
 		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
+
+		// container for jpanels
 		Container c = frame.getLayeredPane();
+
+		// jpanels
 		gameboard = new HexGrid();
 		unitlayer = new DrawUnits();
+
+		// ai
 		AStar pathfind = new AStar();
 
-		// next turn: create button and container add to layeredpanel
+		// create a button to go to next turn
 		JPanel buttoncontainer = new JPanel();
 		JButton nextturn = new JButton("Next Turn");
 		buttoncontainer.setBounds(WINDOW_WIDTH-100, 0, 100, 75);
 		buttoncontainer.add(nextturn);
-		//buttoncontainer.setBackground(new Color(60, 120, 230));
 		c.add(buttoncontainer, new Integer(3));
 
-		// next turn: reset moves left for units and change turn
+		// add listener to button for next turn
+		// for every turn moves are reset and 
+		// team is switched
 		nextturn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				resetMovesLeft();
 				currentturn *= -1;
+				checkWin();
 			}
 		});
 
+		// add mouselistener to gameboard
 		MouseListener mltop = new MouseListener();
 		gameboard.addMouseListener(mltop);
 		
 		// create board gui
-		//gameboard.init();
+		// add jpanels to container
 		c.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 		c.add(gameboard, new Integer(1));		
 		c.add(unitlayer, new Integer(2));
 		unitlayer.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 		gameboard.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-
+		// finish frame
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		frame.pack();
 		frame.setVisible( true );
 		frame.setResizable(false);
 		frame.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 		frame.setLocationRelativeTo(null);
+
+		// update gui units
 		ArrayList<int[]> xy = getCoordsTeams(gameboard);
 		unitlayer.addUnitGraphics(teamnoord,teampopos,xy);
 	}
 
+	// get x,y coords for all units from all teams in specific order
+	// when units die, their place in the array is set to null
+	// these null units must be skipped otherwise exceptions
+	// will occur
+	// the x and y coordinates are given back in an arraylist
 	private ArrayList<int[]> getCoordsTeams(HexGrid gameboard)
 	{
 		ArrayList<int[]> xy = new ArrayList<int[]>();
@@ -225,6 +250,9 @@ class Legends {
 	}
 
 
+	// check if there is a winner
+	// if one of the teamarrays is completely set to null
+	// other team is winner
 	private boolean checkWin()
 	{
 		boolean winner = true;
@@ -259,10 +287,12 @@ class Legends {
 		createUI();
 	}
 
-	// if unit is at tilenum, put as selectedUnit
+	// if unit is at tilenumber, put as selectedUnit
 	private void selectUnit(int tilenum)
 	{
 		Integer tempf = unitlocations[tilenum];
+		// if value in unitlocation at tilenumber is not null
+		// fetch unit from unit array
 		if (tempf != null )
 		{
 			if (tempf < 0)
@@ -275,6 +305,8 @@ class Legends {
 			clickonce++;
 		}
 
+		// set select to true since a unit has been selected
+		// update on gui as well
 		boolean setsel = true;
 		gameboard.setSelect(setsel);
 	}
@@ -282,10 +314,12 @@ class Legends {
 	// given tilenumber a selected unit is moved or attacks
 	private void moveOrAttack(int tilenum)
 	{
+		// get adjacent tiles and name of team whose turn it is
 		ArrayList<Integer> adjacentTiles = gameboard.returnAdjacent();
 		String currentteam = selectedUnit.getTeam();
 		
 		// quit if not turn of current unit team
+		// if noord's turn, currentturn should be 1
 		if (currentteam == "noord")
 		{
 			if (currentturn == -1)
@@ -295,7 +329,6 @@ class Legends {
 		} else if (currentturn == 1){
 			return;
 		}
-
 
 		// quit if selected destination not adjacent
 		if (!adjacentTiles.contains(tilenum) )
@@ -323,16 +356,22 @@ class Legends {
 			}
 		} else {
 			// if clicked location is not empty
-			// quit if attacking same team
+			// save currently selected unit
+			// get unit at destination tile and put it as selectedUnit
 			OpenUnit temp = selectedUnit;
 			selectUnit(tilenum);
+
+			// quit if attacking same team
 			if (currentteam == selectedUnit.getTeam())
 			{
 				return;
 			}
 
+			// if selectedUnit got killed by attack
 			if (temp.attack(selectedUnit))
 			{
+				// set location in unitlocations to null
+				// and set corresponding unit in unit array to null as well
 				unitlocations[selectedUnit.getTileNum()] = null;
 				if (currentteam == "noord")
 				{

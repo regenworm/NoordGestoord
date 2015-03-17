@@ -46,6 +46,8 @@ public class HexGrid extends JPanel {
 
 	private Point mouse = new Point();
 
+	// class constructor
+	// create basic gameboard
 	public HexGrid() {
 
 		// Create list and fill with hexagon shapes
@@ -81,6 +83,7 @@ public class HexGrid extends JPanel {
 	}
 
 	// Draw graphics 
+	// draw selection outline for selected tiles
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -104,8 +107,10 @@ public class HexGrid extends JPanel {
 			g2.draw(s);
 			n++;
 		}
-		//System.out.println(getTileNum(mouse.x,mouse.y));
+		// get tilenumber from point
 		int test = getTileNum(mouse.x,mouse.y);
+
+		// if point is outside of gameboard
 		if (test > -1)
 		{
 			// get clicked tile and init var
@@ -137,16 +142,19 @@ public class HexGrid extends JPanel {
 		}
 	}
 
-	// get tile num from xy location
+	// get tile num from given xy location
 	public int getTileNum(int x, int y) {
-		// Check if mouse is in hexagon and return location/action
+		// for every tile in the gameboard
 		for (int i = 0; i < shapeList.size(); i++) {
+			// check if given tile contains x,y coordinates
 			Shape s = (Shape)shapeList.get(i);	
-			// Rectangle rect = s.getBounds();
+			// if given point is contained in tile, return tilenumber
 			if (s.contains(mouse.x, mouse.y) == true) {
 				return i;
 			}
 		}
+
+		// if point outside gameboard return -1
 		return -1;
 	}
 
@@ -198,21 +206,25 @@ public class HexGrid extends JPanel {
 		return adjacentTiles;
 	}
 
+	// return adjacent tiles of currently selected tile
 	public ArrayList<Integer> returnAdjacent()
 	{
 		return adjacentTiles;
 	}
 
+	// if a tile is selected outline tile red
 	public void setSelect(boolean mode)
 	{
 		selected = mode;
 	}
 
+	// update mousepoint
 	public void setMousePoint(Point mousepoint)
 	{
 		mouse = mousepoint;
 	}
 
+	// return xy coordinates of a tile given a tilenumber
 	public int[] getTileCoords(int j)
 	{
 		double x = shapeList.get(j).getBounds().getX()+20;
