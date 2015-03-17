@@ -4,11 +4,10 @@ import java.util.*;
 import java.awt.Image;
 
 public class DrawUnits extends JPanel {
-	ImageIcon general = new ImageIcon("pics/noordboi.png");
-	Integer[] unitlocations;
-	OpenUnit[] noord;
-	OpenUnit[] popos;
-	ArrayList<int[]> xy;
+	private ImageIcon general = new ImageIcon("pics/noordboi.png");
+	private OpenUnit[] noord;
+	private OpenUnit[] popos;
+	private ArrayList<int[]> xy;
 
 
 	// paint units

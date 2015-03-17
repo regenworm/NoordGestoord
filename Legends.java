@@ -243,7 +243,10 @@ class Legends {
 			} // if second valid click move selected unit to new location
 			else {
 				// move unit
+				unitlocations[selectedUnit.getTileNum()] = null;
 				selectedUnit.moveUnit(tilenum);
+				unitlocations[tilenum] = selectedUnit.getNum();
+
 				selectedUnit = null;
 				clickonce = 0;
 
