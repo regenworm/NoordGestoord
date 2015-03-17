@@ -30,19 +30,20 @@ public class HexGrid extends JPanel {
 	static int startX = x;
 	static int startY = y;
 
-	// Tile selected
+	// Tile selected§
 	boolean selected = false;
 
 	// Tiles clicked
 	static ArrayList<Integer> clicked = new ArrayList<Integer>();
 
 	// Adjacent tiles
-	Rectangle adjacentCheck = new Rectangle();
-	Rectangle rect = new Rectangle();
-	private ArrayList<Integer> adjacentTiles = new ArrayList<Integer>();	
+	static Rectangle adjacentCheck = new Rectangle();
+	static Rectangle rect = new Rectangle();
+	static ArrayList<Integer> adjacentTiles = new ArrayList<Integer>();	
 
 	// List of tiles and shape
 	public static ArrayList<Shape> shapeList = new ArrayList<Shape>();
+	
 	private Polygon poly;
 
 	private Point mouse = new Point();
@@ -142,6 +143,7 @@ public class HexGrid extends JPanel {
 	    			g2.setColor(Color.RED);
 	    			g2.draw(s);	
 	    			selected = true;	
+	    			AStar.findPath();
 	   			}
 	    	}
 	    }
@@ -175,7 +177,7 @@ public class HexGrid extends JPanel {
 	 * Checks if this rectangle intersects with adjacent tiles relative to the 
 	 * selected tile. Returns all adjacent tiles.
 	 */
-	public ArrayList<Integer> adjacentTiles(int selected, Shape s) {
+	public static ArrayList<Integer> adjacentTiles(int selected, Shape s) {
 		adjacentTiles = new ArrayList<Integer>();
 		rect = s.getBounds();
 

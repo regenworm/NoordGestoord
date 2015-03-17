@@ -114,7 +114,7 @@ class Legends {
 		Container c = frame.getLayeredPane();
 		HexGrid gameboard = new HexGrid();
 		DrawUnits unitlayer = new DrawUnits();
-
+		AStar pathfind = new AStar();
 
 		// next turn: create button and container add to layeredpanel
 		JPanel buttoncontainer = new JPanel();
