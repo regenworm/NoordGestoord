@@ -155,11 +155,15 @@ class Legends {
 	{
 		// for each unit on each team reset the moves that can be made
 		for (OpenUnit unit : teamnoord) {
-			unit.resetMoves();
+			if (unit != null) {
+				unit.resetMoves();
+			}
 		}
 
 		for (OpenUnit unit : teampopos) {
-			unit.resetMoves();
+			if (unit != null) {
+				unit.resetMoves();
+			}
 		}
 	}
 
@@ -392,6 +396,10 @@ class Legends {
 			// get tilenumber and set mouse points in gameboard
 			gameboard.setMousePoint(e.getPoint());
 			int tilenum = gameboard.getTileNum(e.getX(),e.getY());
+			if (tilenum == -1)
+			{
+				return;
+			}
 
 			// get unit to take action with
 			if (clickonce < 1)
