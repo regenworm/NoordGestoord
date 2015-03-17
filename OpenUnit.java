@@ -2,6 +2,7 @@ import java.util.*;
 import java.awt.Image;
 
 public interface OpenUnit {
+	public Image getImage();
 	public void reduceHp();
 	public int getAtk();
 	public void setImage(Image imObject);

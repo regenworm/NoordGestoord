@@ -209,7 +209,7 @@ public class HexGrid extends JPanel {
 
 	public int[] getTileCoords(int j)
 	{
-		double x = shapeList.get(j).getBounds().getX()+15;
+		double x = shapeList.get(j).getBounds().getX()+20;
 		double y = shapeList.get(j).getBounds().getY()-5;
 		int[] xy = new int[2];
 		xy[0] = (int) x;

@@ -1,4 +1,5 @@
 import java.awt.Image;
+import javax.swing.ImageIcon;
 
 public class General implements OpenUnit {
 	public int hp;
@@ -15,6 +16,20 @@ public class General implements OpenUnit {
 		this.hp = 5;
 		this.atk = 8;
 		this.team = team;
+		if (team == "noord")
+		{
+			ImageIcon imGeneral = new ImageIcon("pics/Noord_G.png");
+			this.imObject = imGeneral.getImage();
+		} else {
+			ImageIcon imGeneral = new ImageIcon("pics/Noord_sk8er.png");
+			this.imObject = imGeneral.getImage();
+
+		}
+	}
+
+	public Image getImage()
+	{
+		return imObject;
 	}
 	
 	public void reduceHp()

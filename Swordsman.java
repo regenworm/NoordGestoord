@@ -1,4 +1,5 @@
 import java.awt.Image;
+import javax.swing.ImageIcon;
 
 public class Swordsman implements OpenUnit {
 	public int hp;
@@ -8,14 +9,28 @@ public class Swordsman implements OpenUnit {
 	public Image imObject;
 	//private Random rGen = new Random();
 	public int coords;
+	public int[] xycoords;
 	public int movesLeft = 2;
 
-
-	public Swordsman(String teamname) 
+	public Swordsman(String team) 
 	{
 		this.hp = 4;
 		this.atk = 6;
-		this.team = teamname;
+		this.team = team;
+		if (team == "noord")
+		{
+			ImageIcon imGeneral = new ImageIcon("pics/noordboi.png");
+			this.imObject = imGeneral.getImage();
+		} else {
+			ImageIcon imGeneral = new ImageIcon("pics/toilet.png");
+			this.imObject = imGeneral.getImage();
+
+		}
+	}
+
+	public Image getImage()
+	{
+		return imObject;
 	}
 
 	public void reduceHp()

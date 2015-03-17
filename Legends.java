@@ -143,8 +143,6 @@ class Legends {
 		unitlayer.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 		gameboard.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-		int[] xy;
-		int j = 0;
 
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		frame.pack();
@@ -152,9 +150,23 @@ class Legends {
 		frame.setResizable(false);
 		frame.setSize(WINDOW_WIDTH,WINDOW_HEIGHT);
 		frame.setLocationRelativeTo(null);
-		Image temp;
-		unitlayer.addUnitGraphics(unitlocations);
+		ArrayList<int[]> xy = getCoordsTeams(gameboard);
+		unitlayer.addUnitGraphics(teamnoord,teampopos,xy);
 
+	}
+
+	private ArrayList<int[]> getCoordsTeams(HexGrid gameboard)
+	{
+		ArrayList<int[]> xy = new ArrayList<int[]>();
+		for (OpenUnit unit : teamnoord)
+		{
+			xy.add(gameboard.getTileCoords(unit.getTileNum()));
+		}
+		for (OpenUnit unit : teampopos)
+		{
+			xy.add(gameboard.getTileCoords(unit.getTileNum()));
+		}
+		return xy;
 	}
 
 
