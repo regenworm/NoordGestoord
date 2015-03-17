@@ -16,4 +16,7 @@ public interface OpenUnit {
 	public void resetMoves();
 	public int getNum();
 	public String getTeam();
+	public void adjustAdjacencyBonus(int bonus);
+	public void resetBonus();
+	public boolean hitOrMiss();
 }

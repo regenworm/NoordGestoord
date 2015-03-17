@@ -40,9 +40,6 @@ class Legends {
 	// if the value is 0 or above, this corresponds to the
 	// index for teamnoord (values above 0 are teamnoord units)
 	private Integer[] unitlocations = new Integer[BOARD_SIZE];
-	
-	// determines whether this is the first click or the second
-	public int clickonce = 0;
 
 	// gameboard + gameboard gui
 	public HexGrid gameboard;
@@ -52,6 +49,10 @@ class Legends {
 
 	// this is the currently selected unit
 	public OpenUnit selectedUnit;
+
+	// layer on which info is displayed
+	public JLabel info;
+	public JLabel battle;
 
 	// initiate game
 	// no commandline arguments possible
@@ -189,6 +190,18 @@ class Legends {
 		buttoncontainer.add(nextturn);
 		c.add(buttoncontainer, new Integer(3));
 
+		// create a window for extra info
+		info = new JLabel("Info");
+		info.setVerticalAlignment(SwingConstants.TOP);
+		info.setBounds(0, 75, 100, WINDOW_HEIGHT-75);
+		c.add(info, new Integer(3));
+
+		// create a window for battle info
+		battle = new JLabel("Battle:");
+		battle.setVerticalAlignment(SwingConstants.BOTTOM);
+		battle.setBounds(0, 75+(WINDOW_HEIGHT/4), 100, (WINDOW_HEIGHT/2)-75);
+		c.add(battle, new Integer(4));
+
 		// add listener to button for next turn
 		// for every turn moves are reset and 
 		// team is switched
@@ -300,6 +313,7 @@ class Legends {
 		// fetch unit from unit array
 		if (tempf != null )
 		{
+
 			if (tempf < 0)
 			{
 				selectedUnit = teampopos[tempf+12];
@@ -307,13 +321,86 @@ class Legends {
 				selectedUnit = teamnoord[tempf];
 			}
 
-			clickonce++;
+			//update info
+			info.setText("<html> Info:<br>Selected Unit HP: " + selectedUnit.getHp() + "<br> <html>" );
+
 		}
 
 		// set select to true since a unit has been selected
 		// update on gui as well
 		boolean setsel = true;
 		gameboard.setSelect(setsel);
+	}
+
+	// calculate adjacency bonus
+	private void calcBonus( ArrayList<Integer> adjacentTiles)
+	{
+		// if teamnoord's turn
+		if (currentturn == 1)
+		{
+			// for every adjacent ally
+			for (OpenUnit unit : teamnoord)
+			{
+				if (unit != null)
+				{
+					// increment adjacency bonus
+					if (adjacentTiles.contains(unit.getTileNum()))
+					{
+						selectedUnit.adjustAdjacencyBonus(1);
+						if (unit.getType() == "General")
+						{
+							selectedUnit.adjustAdjacencyBonus(1);
+						}
+					}
+				}
+			}// for every adjacent enemy
+			for (OpenUnit unit : teampopos)
+			{
+				if (unit != null)
+				{
+					// decrement adjacency bonus
+					if (adjacentTiles.contains(unit.getTileNum()))
+					{
+						selectedUnit.adjustAdjacencyBonus(-1);
+						if (unit.getType() == "General")
+						{
+							selectedUnit.adjustAdjacencyBonus(-1);
+						}
+					}
+				}
+			}
+		} else {
+			// same principle applies for turn of other team
+			for (OpenUnit unit : teampopos)
+			{
+				if (unit != null)
+				{
+					if (adjacentTiles.contains(unit.getTileNum()))
+					{
+						selectedUnit.adjustAdjacencyBonus(1);
+						if (unit.getType() == "General")
+						{
+							selectedUnit.adjustAdjacencyBonus(1);
+						}
+					}
+				}
+			}
+			for (OpenUnit unit : teamnoord)
+			{
+				if (unit != null)
+				{
+					// increment adjacency bonus for every
+					if (adjacentTiles.contains(unit.getTileNum()))
+					{
+						selectedUnit.adjustAdjacencyBonus(-1);
+						if (unit.getType() == "General")
+						{
+							selectedUnit.adjustAdjacencyBonus(-1);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	// given tilenumber a selected unit is moved or attacks
@@ -361,10 +448,19 @@ class Legends {
 			}
 		} else {
 			// if clicked location is not empty
+			// get adjacency bonus for current unit
+			calcBonus(adjacentTiles);
+
+
 			// save currently selected unit
 			// get unit at destination tile and put it as selectedUnit
 			OpenUnit temp = selectedUnit;
 			selectUnit(tilenum);
+
+			// add info about enemy to info label
+			String infostring = info.getText();
+			infostring = infostring.substring(0, infostring.length()-5);
+			info.setText(infostring + "<html>Enemy Unit HP: " + selectedUnit.getHp() + "<br></html>" );
 
 			// quit if attacking same team
 			if (currentteam == selectedUnit.getTeam())
@@ -373,8 +469,18 @@ class Legends {
 			}
 
 			// if selectedUnit got killed by attack
-			if (temp.attack(selectedUnit))
+			boolean kill = temp.attack(selectedUnit);
+			
+			// if hit print hit in battle info
+			// else print miss in battle info
+			if (temp.hitOrMiss()) {
+				battle.setText("<html>Battle:<br>Enemy unit was hit!<br>Only " + selectedUnit.getHp() + " hp remains! </html>");
+			} else {
+				battle.setText("<html>Battle:<br>You missed!</html>");
+			}
+			if (kill)
 			{
+				battle.setText("<html>Battle:<br>Enemy unit has died!</html>");
 				// set location in unitlocations to null
 				// and set corresponding unit in unit array to null as well
 				unitlocations[selectedUnit.getTileNum()] = null;
@@ -386,8 +492,9 @@ class Legends {
 					teamnoord[selectedUnit.getNum()] = null;
 				}
 			}
-		}
 
+			temp.resetBonus();
+		}
 	}
 
 	// Mouse click listener
@@ -402,7 +509,7 @@ class Legends {
 			}
 
 			// get unit to take action with
-			if (clickonce < 1)
+			if (selectedUnit == null)
 			{
 				selectUnit(tilenum);
 
@@ -412,7 +519,6 @@ class Legends {
 				
 				// deselect everything
 				selectedUnit = null;
-				clickonce = 0;
 				boolean setsel = false;
 				gameboard.setSelect(setsel);
 			}

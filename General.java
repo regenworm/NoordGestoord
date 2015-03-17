@@ -26,6 +26,19 @@ public class General implements OpenUnit {
 	// number in the unit array which contains this unit
 	public int number;
 
+	// adjacency bonus from nearby friendly units
+	public int adjacencyBonus = 0;
+
+	// shows whether last attack hit or missed
+	public boolean hitmiss = false;
+
+	// return hitmiss and reset hitmiss
+	public boolean hitOrMiss() {
+		boolean temp = hitmiss;
+		hitmiss = false;
+		return temp;
+	}
+
 	// constructor
 	public General(String team,int num) 
 	{
@@ -62,7 +75,7 @@ public class General implements OpenUnit {
 	public boolean reduceHp()
 	{
 		this.hp -= 1;
-		if (this.hp == 0) {
+		if (this.hp <= 0) {
 			die();
 			return true;
 		}
@@ -96,7 +109,7 @@ public class General implements OpenUnit {
 		int atkTarget = target.getAtk();
 
 		// chance of hitting
-		double pHit = 1 / (1 + Math.exp(0.4*(this.atk-atkTarget)));
+		double pHit = 1 / (1 + Math.exp(0.4*(getAtk()-atkTarget)));
 		
 		// succes of attack
 		int hit = 0;
@@ -123,7 +136,9 @@ public class General implements OpenUnit {
 		// reduce target hp and check if target died
 		else 
 		{
+			hitmiss = true;
 			System.out.println("Hit!");
+			System.out.println("Target has" + target.getHp() + " points left.");
 			if (target.reduceHp()) {
 				return true;
 			}
@@ -174,5 +189,15 @@ public class General implements OpenUnit {
 	public String getTeam()
 	{
 		return team;
+	}
+
+	public void adjustAdjacencyBonus(int bonus)
+	{
+		adjacencyBonus+= bonus;
+	}
+
+	public void resetBonus()
+	{
+		adjacencyBonus = 0;
 	}
 }

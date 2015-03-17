@@ -21,11 +21,23 @@ public class Swordsman implements OpenUnit {
 	public int coords;
 
 	// number of moves unit can make (attacking or moving)
-	public int movesLeft = 3;
+	public int movesLeft = 300;
 
 	// number in the unit array which contains this unit
 	public int number;
 
+	// shows bonus from adjacent units
+	public int adjacencyBonus = 0;
+
+	// shows whether last attack hit or missed
+	public boolean hitmiss = false;
+
+	// return hitmiss and reset hitmiss
+	public boolean hitOrMiss() {
+		boolean temp = hitmiss;
+		hitmiss = false;
+		return temp;
+	}
 
 	// constructor
 	public Swordsman(String team,int num) 
@@ -64,7 +76,7 @@ public class Swordsman implements OpenUnit {
 	public boolean reduceHp()
 	{
 		this.hp -= 1;
-		if (this.hp == 0) {
+		if (this.hp <= 0) {
 			die();
 			return true;
 		}
@@ -86,7 +98,7 @@ public class Swordsman implements OpenUnit {
 	// return atk so hitchance can be calculated when being attacked
 	public int getAtk()
 	{
-		return this.atk;
+		return this.atk + adjacencyBonus;
 	}
 
 	// attack a target
@@ -98,7 +110,7 @@ public class Swordsman implements OpenUnit {
 		int atkTarget = target.getAtk();
 
 		// chance of hitting
-		double pHit = 1 / (1 + Math.exp(0.4*(this.atk-atkTarget)));
+		double pHit = 1 / (1 + Math.exp(0.4*(getAtk()-atkTarget)));
 		
 		// succes of attack
 		int hit = 0;
@@ -125,7 +137,9 @@ public class Swordsman implements OpenUnit {
 		// reduce target hp and check if target died
 		else 
 		{
+			hitmiss = true;
 			System.out.println("Hit!");
+			System.out.println("Target has" + target.getHp() + " points left.");
 			if (target.reduceHp()) {
 				return true;
 			}
@@ -176,5 +190,15 @@ public class Swordsman implements OpenUnit {
 	public String getTeam()
 	{
 		return team;
+	}
+
+	public void adjustAdjacencyBonus(int bonus)
+	{
+		adjacencyBonus+=bonus;
+	}
+
+	public void resetBonus()
+	{
+		adjacencyBonus = 0;
 	}
 }
