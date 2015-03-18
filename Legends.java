@@ -128,7 +128,8 @@ class Legends {
 				{
 					units[i] = new General(team,i);
 					units[i].moveUnit(j);
-					if (team == "noord") {
+					if (team == "noord") 
+					{
 						unitlocations[j] = i;
 					} else {
 						unitlocations[j] = i-12;
@@ -158,13 +159,15 @@ class Legends {
 	private void resetMovesLeft()
 	{
 		// for each unit on each team reset the moves that can be made
-		for (OpenUnit unit : teamnoord) {
+		for (OpenUnit unit : teamnoord) 
+		{
 			if (unit != null) {
 				unit.resetMoves();
 			}
 		}
 
-		for (OpenUnit unit : teampopos) {
+		for (OpenUnit unit : teampopos) 
+		{
 			if (unit != null) {
 				unit.resetMoves();
 			}
@@ -172,45 +175,66 @@ class Legends {
 	}
 
 	// Create interface
-	public void createUI() {
+	public void createUI() 
+	{
 		// init variables
 		JFrame frame = new JFrame("Noord Gestoord: THE GAME");
 
 		// container for jpanels
 		c = frame.getLayeredPane();
 
+		// background
+		ImageIcon background = new ImageIcon("pics/bg.jpg");
+		JPanel bgpanel = new JPanel();
+		bgpanel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+		JLabel bglabel = new JLabel();
+		bglabel.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+		bglabel.setIcon(background);
+		bgpanel.add(bglabel);
+		c.add(bgpanel, new Integer(0));
+
+
+
 		// jpanels
 		gameboard = new HexGrid();
 		unitlayer = new DrawUnits();
 
+		// make background transparent
+		gameboard.setOpaque(false);
+
 		// ai
 		// AStar pathfind = new AStar();
 
-		// create a button to go to next turn
+		// create a button to go to next turn and make background transparent
 		JPanel buttoncontainer = new JPanel();
 		JButton nextturn = new JButton("Next Turn");
 		buttoncontainer.setBounds(WINDOW_WIDTH-100, 0, 100, 75);
 		buttoncontainer.add(nextturn);
+		buttoncontainer.setOpaque(false);
 		c.add(buttoncontainer, new Integer(3));
 
 		// create a window for extra info
 		info = new JLabel("Info");
+		info.setOpaque(true);
 		info.setVerticalAlignment(SwingConstants.TOP);
 		info.setBounds(0, 75, 100, WINDOW_HEIGHT-75);
 		c.add(info, new Integer(3));
 
 		// create a window for battle info
 		battle = new JLabel("Battle:");
-		battle.setVerticalAlignment(SwingConstants.BOTTOM);
-		battle.setBounds(0, 75+(WINDOW_HEIGHT/4), 100, (WINDOW_HEIGHT/2)-75);
+		battle.setOpaque(true);
+		battle.setVerticalAlignment(SwingConstants.TOP);
+		battle.setBounds(0, 75+(WINDOW_HEIGHT/2), 100, (WINDOW_HEIGHT/2)-75);
 		c.add(battle, new Integer(4));
 
 		// add listener to button for next turn
 		// for every turn moves are reset and 
 		// team is switched
-		nextturn.addActionListener(new ActionListener() {
+		nextturn.addActionListener(new ActionListener() 
+		{
 			@Override
-			public void actionPerformed(ActionEvent e){
+			public void actionPerformed(ActionEvent e)
+			{
 				resetMovesLeft();
 				AStar.findPath();
 				currentturn *= -1;
@@ -342,7 +366,7 @@ class Legends {
 			}
 
 			//update info
-			info.setText("<html> Info:<br>Selected Unit HP: " + selectedUnit.getHp() + "<br> <html>" );
+			info.setText("<html> Info:<br>Selected Unit HP: " + selectedUnit.getHp() + "<br>Moves left: " + selectedUnit.movesLeft() + "<br><html>" );
 
 		}
 
@@ -459,6 +483,13 @@ class Legends {
 				// move unit
 				selectedUnit.moveUnit(tilenum);
 
+
+				// add info about enemy to info label
+				String infostring = info.getText();
+				infostring = infostring.substring(0, infostring.length()-5);
+				info.setText("<html> Info:<br>Selected Unit HP: " + selectedUnit.getHp() + "<br>Moves left: " + selectedUnit.movesLeft() +  "<br><html>" );
+
+
 				// update unitlist dependent on team
 				if (currentteam == "noord"){
 					unitlocations[tilenum] = selectedUnit.getNum();
@@ -477,11 +508,6 @@ class Legends {
 			OpenUnit temp = selectedUnit;
 			selectUnit(tilenum);
 
-			// add info about enemy to info label
-			String infostring = info.getText();
-			infostring = infostring.substring(0, infostring.length()-5);
-			info.setText(infostring + "<html>Enemy Unit HP: " + selectedUnit.getHp() + "<br></html>" );
-
 			// quit if attacking same team
 			if (currentteam == selectedUnit.getTeam())
 			{
@@ -490,6 +516,12 @@ class Legends {
 
 			// if selectedUnit got killed by attack
 			boolean kill = temp.attack(selectedUnit);
+
+			// add info about enemy to info label
+			String infostring = info.getText();
+			infostring = infostring.substring(0, infostring.length()-5);
+			info.setText("<html> Info:<br>Selected Unit HP: " + temp.getHp() + "<br>Moves left: " + temp.movesLeft() + "<br>Enemy Unit HP: " + selectedUnit.getHp() +  "<br><html>" );
+
 			
 			// if hit print hit in battle info
 			// else print miss in battle info

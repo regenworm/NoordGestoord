@@ -74,7 +74,7 @@ public class General implements OpenUnit {
 	// else return false
 	public boolean reduceHp()
 	{
-		this.hp -= 6;
+		this.hp -= 1;
 		if (this.hp <= 0) {
 			die();
 			return true;
@@ -105,6 +105,10 @@ public class General implements OpenUnit {
 	// else returns false
 	public boolean attack(OpenUnit target)
 	{
+		if (movesLeft <= 0) {
+			return false;
+		}
+
 		// attack power of target
 		int atkTarget = target.getAtk();
 

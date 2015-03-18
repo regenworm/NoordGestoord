@@ -21,7 +21,7 @@ public class Swordsman implements OpenUnit {
 	public int coords;
 
 	// number of moves unit can make (attacking or moving)
-	public int movesLeft = 300;
+	public int movesLeft = 3;
 
 	// number in the unit array which contains this unit
 	public int number;
@@ -75,7 +75,7 @@ public class Swordsman implements OpenUnit {
 	// else return false
 	public boolean reduceHp()
 	{
-		this.hp -= 6;
+		this.hp -= 1;
 		if (this.hp <= 0) {
 			die();
 			return true;
@@ -106,6 +106,10 @@ public class Swordsman implements OpenUnit {
 	// else returns false
 	public boolean attack(OpenUnit target)
 	{
+		if (movesLeft <= 0)
+		{
+			return false;
+		}
 		// attack power of target
 		int atkTarget = target.getAtk();
 
