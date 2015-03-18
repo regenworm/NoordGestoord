@@ -3,6 +3,7 @@
  * 			Philip Bouman, 10668667
  * Date: 09-02-2015
  */
+
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
@@ -259,7 +260,7 @@ class Legends {
 				// ai turn
 				if (currentturn == -1)
 				{
-					aiOpponent();
+					//aiOpponent();
 				}
 			}
 		});

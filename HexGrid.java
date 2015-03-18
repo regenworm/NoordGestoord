@@ -3,11 +3,9 @@
  * 			Philip Bouman, 10668667
  */
 
-import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 /* 
  * Creates a HexGrid and registers mouse movements
@@ -23,9 +21,12 @@ public class HexGrid extends JPanel {
 	final static int WIDTH = 600;
 	final static int HEIGHT = 600;
 
+	// Get length of edge ogf hexagon
+	static int hexDim = Hexagon.getHexDim();
+
 	// Position first tile (top left)
-	static int x = (WIDTH / 2) - (int) (40 * 3.5);
-	static int y = (HEIGHT / 2) - (int) (40 * 5.8);
+	static int x = (WIDTH / 2) - (int) (hexDim * 3.5);
+	static int y = (HEIGHT / 2) - (int) (hexDim * 5.8);
 	static int startX = x;
 	static int startY = y;
 
@@ -233,5 +234,4 @@ public class HexGrid extends JPanel {
 	public static ArrayList<Shape> getTiles() {
 		return shapeList;
 	}
-
 }

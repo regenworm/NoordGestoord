@@ -1,12 +1,10 @@
+/* Assignment 3, Datastructuren 2015
+ * Authors: Alex Khawalid, 10634207
+ * 			Philip Bouman, 10668667
+ */
+
 import java.awt.*;
-import javax.swing.*;
-import java.util.ArrayList;
-import java.io.*;
 import java.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.lang.Object.*;
-import java.util.Arrays;
 
 public class AStar {
 
@@ -64,15 +62,10 @@ public class AStar {
 					adjIndex = i;
 				}
 			}
-			System.out.println(cost[i]);
-
 		}
 		int tilenum = adjacent.get(adjIndex);
 		startingTile = tilenum;
 
-		//System.out.println("lowest: " + currentlowest);
-		//System.out.println("tilenum: " + tilenum);	
-		System.out.println(tilenum);
 		return tilenum;
 	}
 
@@ -110,18 +103,8 @@ public class AStar {
 		return occupied;
 	}
 
+	// Sets UntLocations
 	public void setUnitLocations(Integer[] unitsloc) {
 		unitLocations = unitsloc;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
