@@ -255,6 +255,12 @@ class Legends {
 				currentturn *= -1;
 				setTurnLabel();
 				checkWin();
+
+				// ai turn
+				if (currentturn == -1)
+				{
+					aiOpponent();
+				}
 			}
 		});
 
@@ -592,6 +598,7 @@ class Legends {
 			}
 
 			// if any tile is clicked add to clickcount
+			// if clickpoint outside gameboard dont add to clickcount
 			if (tilenum > -1 )
 			{
 				gameboard.clickCount(tilenum);
@@ -603,7 +610,57 @@ class Legends {
 		}
 	}
 
-	//
+	// get next tile from a star path planning
+	private int getAStarPath(int startTile,int destTile) {
+		AStar getpath = new AStar();
+		getpath.setUnitLocations(unitlocations);
+		return getpath.findPath(startTile,destTile);
+	}
+
+	// determine best course of action
+	private int determineDestination()
+	{
+		return 5;
+	}
+
+	// ai moves units
 	private void aiOpponent() {
+		// init variable
+		int path;
+
+		// look at every unit in team
+		for (OpenUnit unit : teampopos)
+		{
+			// if unit is dead skip
+			if (unit == null)
+			{
+				continue;
+			}
+
+			// select unit
+			selectUnit(unit.getTileNum());
+
+
+			// while unit has moves left
+			while(selectedUnit.movesLeft() > 0)
+			{
+				// get path from astar
+				path = getAStarPath(selectedUnit.getTileNum(),determineDestination());
+
+				// if path is available
+				if (path == -1)
+				{
+					break;
+				}
+
+				// move towards objective
+				moveOrAttack(path);
+
+				// update units on gameboard
+				ArrayList<int[]> xy = getCoordsTeams(gameboard);
+				unitlayer.addUnitGraphics(teamnoord,teampopos,xy);
+			}
+
+		}
 	}
 }
