@@ -603,4 +603,7 @@ class Legends {
 		}
 	}
 
+	//
+	private void aiOpponent() {
+	}
 }

@@ -56,10 +56,8 @@ public class AStar {
 		}	
 	}
 */
+	// find shortest path to destionationTIle
 	public static void findPath() {
-		// Check if destinationTile is occupied
-		// int[] = Legends.unitLocations();
-
 		// get clicked tile
 		startingTile = HexGrid.lastTile();	
 		int nextTile;
@@ -76,56 +74,42 @@ public class AStar {
 
 		int maxDepth = 10;
 
-		//while ((maxDepth < maxSearchDist) && (open.size() != 0)) {
-			s = (Shape)tiles.get(startingTile);
-			adjacent = HexGrid.adjacentTiles(startingTile, s);
-			// System.out.println("adjacent tiles: " + adjacent.toString());
-			// closed.add(startingTile);
+		s = (Shape)tiles.get(startingTile);
+		adjacent = HexGrid.adjacentTiles(startingTile, s);
 
-			for (int i = 0; i < adjacent.size(); i++)
+		Integer currentlowest = null;
+		int adjIndex = 0;
+
+		// for all adjacent tiles
+		for (int i = 0; i < adjacent.size(); i++)
+		{
+			// get tilenum
+			int adj = adjacent.get(i);
+
+			// init variables
+			int[] cost = new int[adjacent.size()];
+
+			// put cost of every adjacent tile to destination tile
+			cost[i] = cost(adj, destinationTile);
+
+			// feedback
+			if (currentlowest == null)
 			{
-				int adj = adjacent.get(i);
-
-				int[] cost = new int[adjacent.size()];
-
-				cost[i] = cost(adj, destinationTile);
-
-				System.out.println(cost[i]);
-
-				// int lowestCost = cost.indexOf(Collections.min(cost));
-
-				//System.out.println(lowestCost);
-				if (open.contains(adj) || closed.contains(adj)) {
-					continue;
-				} else {
-					open.add(adj);
-					open.remove(Integer.valueOf(startingTile));	
-				}
-			//}
-
-			closed.add(startingTile);
-
-
-			
-			randomTile = getRandomTile(adjacent);
-			int newCost = cost(randomTile, destinationTile);
-			
-			nextTile = randomTile;
-
-
-
-			startingTile = nextTile;
-			maxDepth += 1;
-			//System.out.println("open: " + open.toString());
-			//System.out.println("closed: " + closed.toString());
-
-			if (closed.contains(destinationTile)) {
-				System.out.println("path: " + closed.toString());
-				break;
+				currentlowest = cost[i];
+				adjIndex = i;
 			} else {
-				continue;
-			}	
+				if (currentlowest > cost[i])
+				{
+					currentlowest = cost[i];
+					adjIndex = i;
+				}
+			}
+			System.out.println(cost[i]);
+
 		}
+		int tilenum = adjacent.get(adjIndex);
+		System.out.println("lowest: " + currentlowest);
+		System.out.println("tilenum: " + tilenum);
 
 		
 	}
