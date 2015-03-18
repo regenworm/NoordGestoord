@@ -83,13 +83,13 @@ public class Swordsman implements OpenUnit {
 		return false;
 	}
 
-	// useless function
+	// returns hp
 	public int getHp()
 	{
 		return this.hp;
 	}
 
-	// purely cosmetical mostly useless
+	// system out feedback function for unit death
 	public void die()
 	{
 		System.out.println(this.type + " was killed");
@@ -156,10 +156,6 @@ public class Swordsman implements OpenUnit {
 	// reduce movesleft
 	public void moveUnit(int coords)
 	{
-		/*System.out.println("Move called:\n\n" 
-							+ "\nOld Location: " + this.coords 
-							+ "\nNew Location: " + coords
-							+ "\nMoves Left:" + movesLeft  + "\n\n");*/
 		
 		this.coords = coords;
 		movesLeft -= 1;
@@ -196,11 +192,13 @@ public class Swordsman implements OpenUnit {
 		return team;
 	}
 
+	// adjusts adjacency bonus
 	public void adjustAdjacencyBonus(int bonus)
 	{
 		adjacencyBonus+=bonus;
 	}
 
+	// reset adjacency bonus
 	public void resetBonus()
 	{
 		adjacencyBonus = 0;

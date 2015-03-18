@@ -70,8 +70,6 @@ public class AStar {
 		int tilenum = adjacent.get(adjIndex);
 		startingTile = tilenum;
 
-		//System.out.println("lowest: " + currentlowest);
-		//System.out.println("tilenum: " + tilenum);	
 		System.out.println(tilenum);
 		return tilenum;
 	}
@@ -110,6 +108,7 @@ public class AStar {
 		return occupied;
 	}
 
+	// update array with locations of all units
 	public void setUnitLocations(Integer[] unitsloc) {
 		unitLocations = unitsloc;
 	}

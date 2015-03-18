@@ -4,7 +4,8 @@ import java.util.*;
 import java.awt.Image;
 
 public class DrawUnits extends JPanel {
-	private ImageIcon general = new ImageIcon("pics/noordboi.png");
+	// variables containing units that need to be drawn
+	// and their locations in the frame
 	private OpenUnit[] noord;
 	private OpenUnit[] popos;
 	private ArrayList<int[]> xy;

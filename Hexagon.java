@@ -18,7 +18,6 @@ public class Hexagon {
 	private static int a = length;
 
 	// b = a cos(30)
-	// geen idee waarom ik eerst a*6 moet doen, maar het werkt...
 	private static int b = (int) ((a*6) * Math.cos(30)); //(a * 0.8660254037844); 
 
 	// c = a sin(30)

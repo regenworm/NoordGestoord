@@ -230,6 +230,7 @@ public class HexGrid extends JPanel {
 		return xy;
 	}
 
+	// returns list of tiles
 	public static ArrayList<Shape> getTiles() {
 		return shapeList;
 	}

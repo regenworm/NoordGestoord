@@ -175,6 +175,7 @@ class Legends {
 		}
 	}
 
+	// set label for whose turn it is in the upper left corner
 	private void setTurnLabel()
 	{
 		String turnstring = "";
@@ -186,7 +187,7 @@ class Legends {
 		turnIndicator.setText(turnstring);
 	}
 
-	// Create interface
+	// Create user interface
 	public void createUI() 
 	{
 		// init variables
@@ -315,7 +316,6 @@ class Legends {
 		}
 		return xy;
 	}
-
 
 	// check if there is a winner
 	// if one of the teamarrays is completely set to null
@@ -552,9 +552,13 @@ class Legends {
 			} else {
 				battle.setText("<html>Battle:<br>You missed!</html>");
 			}
+
+			// if attacked unit has died
 			if (kill)
 			{
+				// tell user
 				battle.setText("<html>Battle:<br>Enemy unit has died!</html>");
+
 				// set location in unitlocations to null
 				// and set corresponding unit in unit array to null as well
 				unitlocations[selectedUnit.getTileNum()] = null;
@@ -567,6 +571,7 @@ class Legends {
 				}
 			}
 
+			// reset adjacency bonus
 			temp.resetBonus();
 		}
 	}
@@ -620,8 +625,11 @@ class Legends {
 	// determine best course of action
 	private int determineDestination()
 	{
+		// init variables
 		int output = 5;
 		ArrayList<Integer> adj = gameboard.returnAdjacent();
+
+		// always attack adjacent enemies
 		for (int i = 0; i < adj.size(); i++)
 		{
 			if (unitlocations[adj.get(i)] != null && unitlocations[adj.get(i)] > -1)
@@ -629,6 +637,8 @@ class Legends {
 				return i;
 			}
 		}
+
+		// if no adjacent enemies get to the closest
 		for (int i = 0; i < unitlocations.length; i++)
 		{
 			if (unitlocations[i] != null && unitlocations[i] > -1)
@@ -636,8 +646,8 @@ class Legends {
 				output = i;
 
 			}
-
 		}
+
 		return output;
 	}
 
@@ -654,19 +664,25 @@ class Legends {
 			{
 				continue;
 			}
+
+			// init variables
 			int i = 0;
+
+			// two steps are available for each unit
 			while (i < 2) {
+				// get xy coords of current unit
 				int[] temp = gameboard.getTileCoords(unit.getTileNum());
 				// get tilenumber and set mouse points in gameboard
 				gameboard.setMousePoint(new Point(temp[0],temp[1]));
 				int tilenum = gameboard.getTileNum(temp[0],temp[1]);
+				
 				// select unit
 				selectUnit(unit.getTileNum());
 
 				// get path from astar
 				path = getAStarPath(selectedUnit.getTileNum(),determineDestination());
 
-				// if path is available
+				// if no path is available stay put
 				if (path == -1)
 				{
 					break;
@@ -680,7 +696,7 @@ class Legends {
 				boolean setsel = false;
 				gameboard.setSelect(setsel);
 
-				// update units on gameboard
+				// update units on gameboard and increment i
 				ArrayList<int[]> xy = getCoordsTeams(gameboard);
 				unitlayer.addUnitGraphics(teamnoord,teampopos,xy);
 				i++;
