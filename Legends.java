@@ -331,7 +331,7 @@ class Legends {
 				winner = false;
 				break;
 			}
-			winteam = "Noord";
+			winteam = "Popos";
 		}
 		if (!winner){
 			winner = true;
@@ -342,7 +342,7 @@ class Legends {
 					winner = false;
 					break;
 				}
-				winteam = "Popos";
+				winteam = "Noord";
 			}
 		}
 
@@ -637,29 +637,35 @@ class Legends {
 				continue;
 			}
 
+
+			int[] temp = gameboard.getTileCoords(unit.getTileNum());
+			// get tilenumber and set mouse points in gameboard
+			gameboard.setMousePoint(new Point(temp[0],temp[1]));
+			int tilenum = gameboard.getTileNum(temp[0],temp[1]);
 			// select unit
 			selectUnit(unit.getTileNum());
 
+			// get path from astar
+			path = getAStarPath(selectedUnit.getTileNum(),determineDestination());
 
-			// while unit has moves left
-			while(selectedUnit.movesLeft() > 0)
+			// if path is available
+			if (path == -1)
 			{
-				// get path from astar
-				path = getAStarPath(selectedUnit.getTileNum(),determineDestination());
-
-				// if path is available
-				if (path == -1)
-				{
-					break;
-				}
-
-				// move towards objective
-				moveOrAttack(path);
-
-				// update units on gameboard
-				ArrayList<int[]> xy = getCoordsTeams(gameboard);
-				unitlayer.addUnitGraphics(teamnoord,teampopos,xy);
+				break;
 			}
+
+			// move towards objective
+			moveOrAttack(path);
+
+			// deselect everything
+			selectedUnit = null;
+			boolean setsel = false;
+			gameboard.setSelect(setsel);
+
+			// update units on gameboard
+			ArrayList<int[]> xy = getCoordsTeams(gameboard);
+			unitlayer.addUnitGraphics(teamnoord,teampopos,xy);
+			
 
 		}
 	}

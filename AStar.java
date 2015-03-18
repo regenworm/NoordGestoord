@@ -29,7 +29,6 @@ public class AStar {
 	 */
 	public static int findPath(int startingTile, int destinationTile) {
 		// get last clicked tile
-		startingTile = HexGrid.lastTile();	
 
 		// get occupied tiles
 		getOccupado();
