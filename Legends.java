@@ -620,7 +620,25 @@ class Legends {
 	// determine best course of action
 	private int determineDestination()
 	{
-		return 5;
+		int output = 5;
+		ArrayList<Integer> adj = gameboard.returnAdjacent();
+		for (int i = 0; i < adj.size(); i++)
+		{
+			if (unitlocations[adj.get(i)] != null && unitlocations[adj.get(i)] > -1)
+			{
+				return i;
+			}
+		}
+		for (int i = 0; i < unitlocations.length; i++)
+		{
+			if (unitlocations[i] != null && unitlocations[i] > -1)
+			{
+				output = i;
+
+			}
+
+		}
+		return output;
 	}
 
 	// ai moves units
@@ -636,36 +654,37 @@ class Legends {
 			{
 				continue;
 			}
+			int i = 0;
+			while (i < 2) {
+				int[] temp = gameboard.getTileCoords(unit.getTileNum());
+				// get tilenumber and set mouse points in gameboard
+				gameboard.setMousePoint(new Point(temp[0],temp[1]));
+				int tilenum = gameboard.getTileNum(temp[0],temp[1]);
+				// select unit
+				selectUnit(unit.getTileNum());
 
+				// get path from astar
+				path = getAStarPath(selectedUnit.getTileNum(),determineDestination());
 
-			int[] temp = gameboard.getTileCoords(unit.getTileNum());
-			// get tilenumber and set mouse points in gameboard
-			gameboard.setMousePoint(new Point(temp[0],temp[1]));
-			int tilenum = gameboard.getTileNum(temp[0],temp[1]);
-			// select unit
-			selectUnit(unit.getTileNum());
+				// if path is available
+				if (path == -1)
+				{
+					break;
+				}
 
-			// get path from astar
-			path = getAStarPath(selectedUnit.getTileNum(),determineDestination());
+				// move towards objective
+				moveOrAttack(path);
 
-			// if path is available
-			if (path == -1)
-			{
-				break;
-			}
+				// deselect everything
+				selectedUnit = null;
+				boolean setsel = false;
+				gameboard.setSelect(setsel);
 
-			// move towards objective
-			moveOrAttack(path);
-
-			// deselect everything
-			selectedUnit = null;
-			boolean setsel = false;
-			gameboard.setSelect(setsel);
-
-			// update units on gameboard
-			ArrayList<int[]> xy = getCoordsTeams(gameboard);
-			unitlayer.addUnitGraphics(teamnoord,teampopos,xy);
-			
+				// update units on gameboard
+				ArrayList<int[]> xy = getCoordsTeams(gameboard);
+				unitlayer.addUnitGraphics(teamnoord,teampopos,xy);
+				i++;
+			}	
 
 		}
 	}
