@@ -119,22 +119,17 @@ public class HexGrid extends JPanel {
 			// get adjacent tiles
 			adjacentTiles(test,s);
 
-			// write
-			g2.drawString("Tile: " + test, 10, 20);
-			g2.drawString("Last clicked Tile: " + lastTile(), 10, 40);
-			g2.drawString("Adjacent: " + adjacentTiles.toString(), 10, 60);
-
 			// set paint brush
 			g2.setStroke(new BasicStroke(3));
 			g2.setColor(Color.RED);
 
 			// paint selected tile flower
 			if (selected) {
-				for (int tilenext : adjacentTiles)
+				/*for (int tilenext : adjacentTiles)
 				{
 					temp = shapeList.get(tilenext);
 					g2.draw(temp);
-				}
+				}*/
 				g2.draw(s);	
 				selected = true;	
 			}

@@ -56,6 +56,7 @@ class Legends {
 	// layer on which info is displayed
 	public JLabel info;
 	public JLabel battle;
+	public JLabel turnIndicator;
 
 	// initiate game
 	// no commandline arguments possible
@@ -174,6 +175,17 @@ class Legends {
 		}
 	}
 
+	private void setTurnLabel()
+	{
+		String turnstring = "";
+		if (currentturn == 1) {
+			turnstring = "<html>Turn:<br>Team Noord<br>";
+		} else {
+			turnstring = "<html>Turn:<br>Team Popos<br>";
+		}
+		turnIndicator.setText(turnstring);
+	}
+
 	// Create interface
 	public void createUI() 
 	{
@@ -192,8 +204,6 @@ class Legends {
 		bglabel.setIcon(background);
 		bgpanel.add(bglabel);
 		c.add(bgpanel, new Integer(0));
-
-
 
 		// jpanels
 		gameboard = new HexGrid();
@@ -227,6 +237,11 @@ class Legends {
 		battle.setBounds(0, 75+(WINDOW_HEIGHT/2), 100, (WINDOW_HEIGHT/2)-75);
 		c.add(battle, new Integer(4));
 
+		// create a window for turn indicator
+		turnIndicator = new JLabel("<html>Turn:<br>Team Noord<br>");
+		turnIndicator.setBounds(0,0,WINDOW_WIDTH-100,75);
+		c.add(turnIndicator, new Integer(3));
+
 		// add listener to button for next turn
 		// for every turn moves are reset and 
 		// team is switched
@@ -238,6 +253,7 @@ class Legends {
 				resetMovesLeft();
 				AStar.findPath();
 				currentturn *= -1;
+				setTurnLabel();
 				checkWin();
 			}
 		});
