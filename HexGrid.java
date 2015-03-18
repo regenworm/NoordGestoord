@@ -125,11 +125,7 @@ public class HexGrid extends JPanel {
 
 			// paint selected tile flower
 			if (selected) {
-				/*for (int tilenext : adjacentTiles)
-				{
-					temp = shapeList.get(tilenext);
-					g2.draw(temp);
-				}*/
+
 				g2.draw(s);	
 				selected = true;	
 			}
@@ -167,7 +163,6 @@ public class HexGrid extends JPanel {
 	public static int lastTile() {
 		int n;
 
-		// insert exception ?
 		if (clicked.size() < 1) {
 			n = 0;
 		} else {
