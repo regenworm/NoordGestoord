@@ -1,8 +1,3 @@
-/* Assignment 3, Datastructuren 2015
- * Authors: Alex Khawalid, 10634207
- * 			Philip Bouman, 10668667
- */
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -13,6 +8,7 @@ public class DrawUnits extends JPanel {
 	private OpenUnit[] noord;
 	private OpenUnit[] popos;
 	private ArrayList<int[]> xy;
+
 
 	// paint units
 	// constantly keep painting all units
@@ -63,6 +59,7 @@ public class DrawUnits extends JPanel {
 
 				g.drawImage(imtemp,temp[0], temp[1], null);
 			}
+
 		}
 		
 		// update visuals
@@ -76,4 +73,6 @@ public class DrawUnits extends JPanel {
 		this.popos = popos;
 		this.xy = xy;
 	}
+
+
 }

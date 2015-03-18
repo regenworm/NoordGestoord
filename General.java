@@ -51,7 +51,7 @@ public class General implements OpenUnit {
 			this.imObject = imGeneral.getImage();
 			number = num;
 		} else {
-			ImageIcon imGeneral = new ImageIcon("pics/Noord_gans.png");
+			ImageIcon imGeneral = new ImageIcon("pics/Noord_sk8er.png");
 			this.imObject = imGeneral.getImage();
 			number = num;
 		}
