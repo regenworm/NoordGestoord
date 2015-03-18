@@ -251,7 +251,7 @@ class Legends {
 			public void actionPerformed(ActionEvent e)
 			{
 				resetMovesLeft();
-				AStar.findPath();
+				AStar.findPath(0, 10);
 				currentturn *= -1;
 				setTurnLabel();
 				checkWin();
